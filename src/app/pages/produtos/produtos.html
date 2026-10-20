@@ -5,11 +5,22 @@
 } @else if (erro()) {
   <p>Não foi possível carregar os produtos. Verifica se a API está a correr.</p>
 } @else {
+  <div class="filtros">
+    <input type="text" placeholder="Pesquisar por nome..." [(ngModel)]="pesquisa" />
+
+    <select [(ngModel)]="categoria">
+      <option value="">Todas as categorias</option>
+      @for (c of categorias(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+  </div>
+
   <div class="grelha">
-    @for (produto of produtos(); track produto.id) {
+    @for (produto of produtosFiltrados(); track produto.id) {
       <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
     } @empty {
-      <p>Sem produtos.</p>
+      <p>Sem resultados.</p>
     }
   </div>
 }
