@@ -1,13 +1,15 @@
-<article class="produto">
-  <img [src]="produto.thumbnail" [alt]="produto.title">
+<h1>Produtos</h1>
 
-  <h2>{{ produto.title }}</h2>
-
-  <p>{{ produto.description }}</p>
-
-  <p>Categoria: {{ produto.category }}</p>
-
-  <p>Preço: {{ produto.price | currency:'EUR' }}</p>
-
-  <p>Stock: {{ produto.stock }}</p>
-</article>
+@if (carregando()) {
+  <p>A carregar produtos...</p>
+} @else if (erro()) {
+  <p>Não foi possível carregar os produtos. Verifica se a API está a correr.</p>
+} @else {
+  <div class="grelha">
+    @for (produto of produtos(); track produto.id) {
+      <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
+    } @empty {
+      <p>Sem produtos.</p>
+    }
+  </div>
+}

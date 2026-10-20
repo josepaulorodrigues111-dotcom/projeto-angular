@@ -1,8 +1,5 @@
-<main>
-@for (produto of produtos(); track produto.id) {
-<app-produtos class="produto" [produto]="produto"/>
-}
+<nav>
+  <a routerLink="/produtos">Produtos</a>
+</nav>
 
-
-
-</main>
+<router-outlet />

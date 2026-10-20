@@ -1,0 +1,15 @@
+.cartao {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+img { width: 100%; border-radius: 6px; }
+.categoria { color: #666; font-size: 0.85rem; margin: 0; }
+.preco { font-weight: bold; margin: 0; }
+.stock { margin: 0; font-size: 0.9rem; }
+.esgotado { color: #c62828; }
+.poucas { color: #ef6c00; }
+.disponivel { color: #2e7d32; }

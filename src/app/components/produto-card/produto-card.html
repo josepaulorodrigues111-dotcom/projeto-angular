@@ -1,0 +1,15 @@
+<article class="cartao">
+  <img [src]="produto.thumbnail" [alt]="produto.title" />
+  <h3>{{ produto.title }}</h3>
+  <p>{{ produto.description }}</p>
+  <p class="categoria">{{ produto.category | titlecase }}</p>
+  <p class="preco">{{ produto.price | currency: 'EUR' }}</p>
+
+  @switch (disponibilidade) {
+    @case ('esgotado') { <p class="stock esgotado">Esgotado</p> }
+    @case ('poucas') { <p class="stock poucas">Apenas {{ produto.stock }} unidades</p> }
+    @default { <p class="stock disponivel">Em stock ({{ produto.stock }})</p> }
+  }
+
+  <button (click)="verDetalhe.emit(produto)">Ver detalhe</button>
+</article>
