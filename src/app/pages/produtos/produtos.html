@@ -1,0 +1,13 @@
+<article class="produto">
+  <img [src]="produto.thumbnail" [alt]="produto.title">
+
+  <h2>{{ produto.title }}</h2>
+
+  <p>{{ produto.description }}</p>
+
+  <p>Categoria: {{ produto.category }}</p>
+
+  <p>Preço: {{ produto.price | currency:'EUR' }}</p>
+
+  <p>Stock: {{ produto.stock }}</p>
+</article>

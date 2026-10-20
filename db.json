@@ -1,22 +1,16 @@
 {
   "produtos": [
-    {
-      "id": "1",
-      "title": "Teclado Mecânico",
-      "description": "Teclado mecânico com iluminação RGB.",
-      "price": 59.9,
-      "category": "informática",
-      "stock": 12,
-      "thumbnail": "https://picsum.photos/seed/teclado/300/200"
-    },
-    {
-      "id": "2",
-      "title": "Rato Sem Fios",
-      "description": "Rato ergonómico com bateria de longa duração.",
-      "price": 24.5,
-      "category": "informática",
-      "stock": 3,
-      "thumbnail": "https://picsum.photos/seed/rato/300/200"
-    }
+    { "id": "1", "title": "Teclado Mecânico", "description": "Teclado mecânico com iluminação RGB.", "price": 59.9, "category": "informática", "stock": 12, "thumbnail": "https://picsum.photos/seed/teclado/300/200" },
+    { "id": "2", "title": "Rato Sem Fios", "description": "Rato ergonómico com bateria de longa duração.", "price": 24.5, "category": "informática", "stock": 3, "thumbnail": "https://picsum.photos/seed/rato/300/200" },
+    { "id": "3", "title": "Monitor 24 polegadas", "description": "Monitor Full HD com painel IPS.", "price": 139.0, "category": "informática", "stock": 0, "thumbnail": "https://picsum.photos/seed/monitor/300/200" },
+    { "id": "4", "title": "Candeeiro de Secretária", "description": "Candeeiro LED com intensidade regulável.", "price": 19.99, "category": "casa", "stock": 25, "thumbnail": "https://picsum.photos/seed/candeeiro/300/200" },
+    { "id": "5", "title": "Conjunto de Panelas", "description": "Conjunto de 5 panelas antiaderentes.", "price": 79.0, "category": "casa", "stock": 4, "thumbnail": "https://picsum.photos/seed/panelas/300/200" },
+    { "id": "6", "title": "Almofada Decorativa", "description": "Almofada em algodão, 45x45 cm.", "price": 12.5, "category": "casa", "stock": 40, "thumbnail": "https://picsum.photos/seed/almofada/300/200" },
+    { "id": "7", "title": "Bola de Futebol", "description": "Bola tamanho 5 para treino e jogo.", "price": 22.0, "category": "desporto", "stock": 18, "thumbnail": "https://picsum.photos/seed/bola/300/200" },
+    { "id": "8", "title": "Tapete de Yoga", "description": "Tapete antiderrapante de 6 mm.", "price": 17.9, "category": "desporto", "stock": 2, "thumbnail": "https://picsum.photos/seed/yoga/300/200" },
+    { "id": "9", "title": "Halteres 5 kg (par)", "description": "Par de halteres revestidos a borracha.", "price": 34.0, "category": "desporto", "stock": 9, "thumbnail": "https://picsum.photos/seed/halteres/300/200" },
+    { "id": "10", "title": "Romance Histórico", "description": "Romance de 420 páginas, edição de bolso.", "price": 14.9, "category": "livros", "stock": 15, "thumbnail": "https://picsum.photos/seed/romance/300/200" },
+    { "id": "11", "title": "Guia de Angular", "description": "Manual prático para iniciantes.", "price": 29.9, "category": "livros", "stock": 5, "thumbnail": "https://picsum.photos/seed/guia/300/200" },
+    { "id": "12", "title": "Livro de Receitas", "description": "100 receitas tradicionais portuguesas.", "price": 18.5, "category": "livros", "stock": 7, "thumbnail": "https://picsum.photos/seed/receitas/300/200" }
   ]
 }
