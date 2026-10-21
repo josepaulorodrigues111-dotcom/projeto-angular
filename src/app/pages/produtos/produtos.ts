@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../../models/produto';
 import { ProdutoCard } from '../../components/produto-card/produto-card';
@@ -12,6 +13,7 @@ import { ProdutoCard } from '../../components/produto-card/produto-card';
 })
 export class Produtos implements OnInit {
   private readonly produtoService = inject(ProdutoService);
+  private readonly router = inject(Router);
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
@@ -50,6 +52,6 @@ export class Produtos implements OnInit {
   }
 
   aoVerDetalhe(produto: Produto): void {
-    console.log('Ver detalhe:', produto.title);
+    this.router.navigate(['/produtos', produto.id]);
   }
 }

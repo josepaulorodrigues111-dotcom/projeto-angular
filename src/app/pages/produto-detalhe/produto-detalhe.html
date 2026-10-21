@@ -1,0 +1,26 @@
+<a routerLink="/produtos">← Voltar à lista</a>
+
+@if (carregando()) {
+  <p>A carregar produto...</p>
+} @else if (erro()) {
+  <p>Não foi possível carregar o produto.</p>
+} @else if (produto(); as p) {
+  <article class="detalhe">
+    <img [src]="p.thumbnail" [alt]="p.title" />
+
+    <div class="info">
+      <h1>{{ p.title }}</h1>
+      <p class="categoria">{{ p.category | titlecase }}</p>
+      <p>{{ p.description }}</p>
+      <p class="preco">{{ p.price | currency: 'EUR' }}</p>
+
+      @switch (true) {
+        @case (p.stock === 0) { <p class="stock esgotado">Esgotado</p> }
+        @case (p.stock <= 5) { <p class="stock poucas">Apenas {{ p.stock }} unidades</p> }
+        @default { <p class="stock disponivel">Em stock ({{ p.stock }})</p> }
+      }
+
+      <a [routerLink]="['/produtos', p.id, 'editar']">Editar produto</a>
+    </div>
+  </article>
+}
