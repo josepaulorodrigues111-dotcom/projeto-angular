@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { Cabecalho } from './components/cabecalho/cabecalho';
 
 @Component({
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, Cabecalho],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

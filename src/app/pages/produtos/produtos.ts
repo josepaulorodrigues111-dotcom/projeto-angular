@@ -38,6 +38,14 @@ export class Produtos implements OnInit {
     );
   });
 
+  // 4 produtos em destaque: os mais caros que ainda têm stock
+  destaques = computed(() =>
+    [...this.produtos()]
+      .filter((p) => p.stock > 0)
+      .sort((a, b) => b.price - a.price)
+      .slice(0, 4)
+  );
+
   ngOnInit(): void {
     this.produtoService.listar().subscribe({
       next: (lista) => {

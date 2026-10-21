@@ -1,1 +1,35 @@
-<p>dashboard works!</p>
+<h1>Dashboard</h1>
+
+@if (carregando()) {
+  <p>A carregar dados...</p>
+} @else if (erro()) {
+  <p>Não foi possível carregar os dados. Verifica se a API está a correr.</p>
+} @else {
+  <div class="resumo">
+    <div class="caixa">
+      <span class="numero">{{ total() }}</span>
+      <span>Produtos</span>
+    </div>
+    <div class="caixa">
+      <span class="numero esgotado">{{ esgotados() }}</span>
+      <span>Esgotados</span>
+    </div>
+    <div class="caixa">
+      <span class="numero poucas">{{ stockBaixo() }}</span>
+      <span>Stock baixo</span>
+    </div>
+    <div class="caixa">
+      <span class="numero">{{ valorStock() | currency: 'EUR' }}</span>
+      <span>Valor em stock</span>
+    </div>
+  </div>
+
+  <h2>Por categoria</h2>
+  <ul>
+    @for (c of porCategoria(); track c.categoria) {
+      <li>{{ c.categoria | titlecase }}: {{ c.quantidade }}</li>
+    }
+  </ul>
+
+  <a routerLink="/produtos">Ver todos os produtos →</a>
+}

@@ -1,0 +1,17 @@
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 16px 0 24px;
+}
+.caixa {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.numero { font-size: 1.6rem; font-weight: bold; }
+.esgotado { color: #c62828; }
+.poucas { color: #ef6c00; }
