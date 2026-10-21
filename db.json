@@ -1,122 +1,184 @@
 {
   "produtos": [
     {
-      "id": "1",
-      "title": "Teclado Mecânico",
-      "description": "Teclado mecânico com iluminação RGB.",
-      "price": 59.9,
-      "category": "informática",
+      "id": 1,
+      "title": "Auscultadores Wireless Pretos",
+      "description": "Auscultadores sem fios com design minimalista para música e chamadas.",
+      "category": "audio",
+      "price": 79.9,
       "stock": 12,
-      "thumbnail": "https://picsum.photos/seed/teclado/300/200"
+      "thumbnail": "/images/auscultadores-pretos.jpg"
     },
     {
-      "id": "2",
-      "title": "Rato Sem Fios",
-      "description": "Rato ergonómico com bateria de longa duração.",
-      "price": 24.5,
-      "category": "informática",
-      "stock": 3,
-      "thumbnail": "https://picsum.photos/seed/rato/300/200"
+      "id": 2,
+      "title": "Auscultadores Wireless Brancos",
+      "description": "Auscultadores sem fios confortáveis para utilização diária.",
+      "category": "audio",
+      "price": 84.9,
+      "stock": 8,
+      "thumbnail": "/images/auscultadores-brancos.jpg"
     },
     {
-      "id": "3",
-      "title": "Monitor 24 polegadas",
-      "description": "Monitor Full HD com painel IPS.",
-      "price": 139,
-      "category": "informática",
-      "stock": 0,
-      "thumbnail": "https://picsum.photos/seed/monitor/300/200"
+      "id": 3,
+      "title": "Auriculares Bluetooth Pretos",
+      "description": "Auriculares compactos com caixa de carregamento.",
+      "category": "audio",
+      "price": 39.9,
+      "stock": 20,
+      "thumbnail": "/images/earbuds-pretos.jpg"
     },
     {
-      "id": "4",
-      "title": "Candeeiro de Secretária",
-      "description": "Candeeiro LED com intensidade regulável.",
-      "price": 19.99,
-      "category": "casa",
-      "stock": 25,
-      "thumbnail": "https://picsum.photos/seed/candeeiro/300/200"
-    },
-    {
-      "id": "5",
-      "title": "Conjunto de Panelas",
-      "description": "Conjunto de 5 panelas antiaderentes.",
-      "price": 79,
-      "category": "casa",
-      "stock": 4,
-      "thumbnail": "https://picsum.photos/seed/panelas/300/200"
-    },
-    {
-      "id": "6",
-      "title": "Almofada Decorativa",
-      "description": "Almofada em algodão, 45x45 cm.",
-      "price": 12.5,
-      "category": "casa",
-      "stock": 40,
-      "thumbnail": "https://picsum.photos/seed/almofada/300/200"
-    },
-    {
-      "id": "7",
-      "title": "Bola de Futebol",
-      "description": "Bola tamanho 5 para treino e jogo.",
-      "price": 22,
-      "category": "desporto",
-      "stock": 18,
-      "thumbnail": "https://picsum.photos/seed/bola/300/200"
-    },
-    {
-      "id": "8",
-      "title": "Tapete de Yoga",
-      "description": "Tapete antiderrapante de 6 mm.",
-      "price": 17.9,
-      "category": "desporto",
-      "stock": 2,
-      "thumbnail": "https://picsum.photos/seed/yoga/300/200"
-    },
-    {
-      "id": "9",
-      "title": "Halteres 5 kg (par)",
-      "description": "Par de halteres revestidos a borracha.",
-      "price": 34,
-      "category": "desporto",
-      "stock": 9,
-      "thumbnail": "https://picsum.photos/seed/halteres/300/200"
-    },
-    {
-      "id": "10",
-      "title": "Romance Histórico",
-      "description": "Romance de 420 páginas, edição de bolso.",
-      "price": 14.9,
-      "category": "livros",
+      "id": 4,
+      "title": "Auriculares Bluetooth Brancos",
+      "description": "Auriculares sem fios com estojo de carregamento compacto.",
+      "category": "audio",
+      "price": 42.9,
       "stock": 15,
-      "thumbnail": "https://picsum.photos/seed/romance/300/200"
+      "thumbnail": "/images/earbuds-brancos.jpg"
     },
     {
-      "id": "11",
-      "title": "Guia de Angular",
-      "description": "Manual prático para iniciantes.",
-      "price": 29.9,
-      "category": "livros",
-      "stock": 5,
-      "thumbnail": "https://picsum.photos/seed/guia/300/200"
+      "id": 5,
+      "title": "Coluna Bluetooth",
+      "description": "Coluna portátil para ouvir música em casa ou em viagem.",
+      "category": "audio",
+      "price": 49.9,
+      "stock": 10,
+      "thumbnail": "/images/coluna-bluetooth.jpg"
     },
     {
-      "id": "12",
-      "title": "Livro de Receitas",
-      "description": "100 receitas tradicionais portuguesas.",
-      "price": 18.5,
-      "category": "livros",
+      "id": 6,
+      "title": "Smartwatch",
+      "description": "Relógio inteligente para acompanhar a atividade diária e notificações.",
+      "category": "acessorios",
+      "price": 99.9,
       "stock": 7,
-      "thumbnail": "https://picsum.photos/seed/receitas/300/200"
+      "thumbnail": "/images/smartwatch.jpg"
     },
     {
-      "title": "ADSADAD",
-      "description": "ADSADDAADSAD",
-      "price": 50,
-      "category": "ASDDA",
-      "stock": 50,
-      "thumbnail": "https://picsum.photos/seed/novo/300/200",
-      "id": "BhoV5fwN8sc"
+      "id": 7,
+      "title": "Rato Gaming RGB",
+      "description": "Rato para gaming com iluminação RGB e formato ergonómico.",
+      "category": "gaming",
+      "price": 34.9,
+      "stock": 14,
+      "thumbnail": "/images/rato-gaming.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Teclado Gaming RGB",
+      "description": "Teclado gaming com iluminação RGB e teclas responsivas.",
+      "category": "gaming",
+      "price": 59.9,
+      "stock": 9,
+      "thumbnail": "/images/teclado-gaming.jpg"
+    },
+    {
+      "id": 9,
+      "title": "Computador Portátil",
+      "description": "Computador portátil para trabalho, estudo e entretenimento.",
+      "category": "informatica",
+      "price": 699.9,
+      "stock": 5,
+      "thumbnail": "/images/portatil.jpg"
+    },
+    {
+      "id": 10,
+      "title": "Auscultadores Premium",
+      "description": "Auscultadores over-ear com acabamento moderno e almofadas confortáveis.",
+      "category": "audio",
+      "price": 119.9,
+      "stock": 6,
+      "thumbnail": "/images/auscultadores-sony-estilo.jpg"
+    },
+    {
+      "id": 11,
+      "title": "Powerbank",
+      "description": "Bateria portátil para carregar dispositivos em movimento.",
+      "category": "acessorios",
+      "price": 24.9,
+      "stock": 18,
+      "thumbnail": "/images/powerbank.jpg"
+    },
+    {
+      "id": 12,
+      "title": "Carregador USB",
+      "description": "Carregador compacto para os teus dispositivos compatíveis.",
+      "category": "acessorios",
+      "price": 19.9,
+      "stock": 25,
+      "thumbnail": "/images/carregador-usb.jpg"
+    },
+    {
+      "id": 13,
+      "title": "Webcam HD",
+      "description": "Webcam para videochamadas, aulas e reuniões online.",
+      "category": "informatica",
+      "price": 44.9,
+      "stock": 11,
+      "thumbnail": "/images/webcam.jpg"
+    },
+    {
+      "id": 14,
+      "title": "Cadeira de Escritório",
+      "description": "Cadeira ergonómica para um espaço de trabalho confortável.",
+      "category": "acessorios",
+      "price": 189.9,
+      "stock": 4,
+      "thumbnail": "/images/cadeira-escritorio.jpg"
+    },
+    {
+      "id": 15,
+      "title": "Router Wi-Fi",
+      "description": "Router para melhorar a conectividade da rede doméstica.",
+      "category": "informatica",
+      "price": 69.9,
+      "stock": 8,
+      "thumbnail": "/images/router-wifi.jpg"
+    },
+    {
+      "id": 16,
+      "title": "Comando Gaming",
+      "description": "Comando sem fios para jogos compatíveis.",
+      "category": "gaming",
+      "price": 54.9,
+      "stock": 13,
+      "thumbnail": "/images/comando-gaming.jpg"
+    },
+    {
+      "id": 17,
+      "title": "Monitor",
+      "description": "Monitor para produtividade, estudo e entretenimento.",
+      "category": "informatica",
+      "price": 159.9,
+      "stock": 6,
+      "thumbnail": "/images/monitor.jpg"
+    },
+    {
+      "id": 18,
+      "title": "SSD Portátil",
+      "description": "Armazenamento externo compacto para guardar e transportar ficheiros.",
+      "category": "informatica",
+      "price": 89.9,
+      "stock": 16,
+      "thumbnail": "/images/ssd-portatil.jpg"
+    },
+    {
+      "id": 19,
+      "title": "Auriculares Premium Brancos",
+      "description": "Auriculares sem fios com estojo de carregamento.",
+      "category": "audio",
+      "price": 59.9,
+      "stock": 10,
+      "thumbnail": "/images/earbuds-brancos-jbl-estilo.jpg"
+    },
+    {
+      "id": 20,
+      "title": "Mochila para Portátil",
+      "description": "Mochila para transportar computador e acessórios.",
+      "category": "acessorios",
+      "price": 39.9,
+      "stock": 9,
+      "thumbnail": "/images/mochila.jpg"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

@@ -1,45 +1,25 @@
+<h1>Produtos</h1>
+
 @if (carregando()) {
   <p>A carregar produtos...</p>
 } @else if (erro()) {
   <p>Não foi possível carregar os produtos. Verifica se a API está a correr.</p>
 } @else {
-  <section class="hero">
-    <div class="hero-texto">
-      <h1>Tecnologia que se ouve.</h1>
-      <p>Auscultadores, auriculares e acessórios das melhores marcas.</p>
-      <button (click)="catalogo.scrollIntoView({ behavior: 'smooth' })">Ver catálogo</button>
-    </div>
-    @if (destaques()[0]; as d) {
-      <img class="hero-img" [src]="d.thumbnail" [alt]="d.title" />
-    }
-  </section>
-
-  <h2>Em destaque</h2>
-  <div class="grelha">
-    @for (produto of destaques(); track produto.id) {
-      <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
-    }
+  <div class="filtros">
+    <input type="text" placeholder="Pesquisar por nome..." [(ngModel)]="pesquisa" />
+    <select [(ngModel)]="categoria">
+      <option value="">Todas as categorias</option>
+      @for (c of categorias(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
   </div>
 
-  <section #catalogo class="catalogo">
-    <h2>Todos os produtos</h2>
-
-    <div class="filtros">
-      <input type="text" placeholder="Pesquisar por nome..." [(ngModel)]="pesquisa" />
-      <select [(ngModel)]="categoria">
-        <option value="">Todas as categorias</option>
-        @for (c of categorias(); track c) {
-          <option [value]="c">{{ c }}</option>
-        }
-      </select>
-    </div>
-
-    <div class="grelha">
-      @for (produto of produtosFiltrados(); track produto.id) {
-        <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
-      } @empty {
-        <p>Sem resultados.</p>
-      }
-    </div>
-  </section>
+  <div class="grelha">
+    @for (produto of produtosFiltrados(); track produto.id) {
+      <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
+    } @empty {
+      <p>Sem resultados.</p>
+    }
+  </div>
 }

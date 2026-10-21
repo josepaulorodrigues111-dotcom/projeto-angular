@@ -6,10 +6,10 @@ import { Produto } from '../../models/produto';
 import { ProdutoCard } from '../../components/produto-card/produto-card';
 
 @Component({
-  imports: [ProdutoCard, FormsModule],
   selector: 'app-produtos',
-  styleUrl: './produtos.css',
+  imports: [ProdutoCard, FormsModule],
   templateUrl: './produtos.html',
+  styleUrl: './produtos.css',
 })
 export class Produtos implements OnInit {
   private readonly produtoService = inject(ProdutoService);
@@ -22,15 +22,14 @@ export class Produtos implements OnInit {
   pesquisa = signal('');
   categoria = signal('');
 
-  // Categorias distintas, calculadas a partir dos produtos
   categorias = computed(() =>
     [...new Set(this.produtos().map((p) => p.category))].sort()
   );
 
-  // Lista filtrada por texto e categoria
   produtosFiltrados = computed(() => {
     const texto = this.pesquisa().trim().toLowerCase();
     const cat = this.categoria();
+
     return this.produtos().filter(
       (p) =>
         p.title.toLowerCase().includes(texto) &&
@@ -38,7 +37,6 @@ export class Produtos implements OnInit {
     );
   });
 
-  // 4 produtos em destaque: os mais caros que ainda têm stock
   destaques = computed(() =>
     [...this.produtos()]
       .filter((p) => p.stock > 0)
@@ -52,7 +50,8 @@ export class Produtos implements OnInit {
         this.produtos.set(lista);
         this.carregando.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('Erro ao carregar produtos:', err);
         this.erro.set(true);
         this.carregando.set(false);
       },

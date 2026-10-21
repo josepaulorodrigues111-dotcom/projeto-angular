@@ -1,7 +1,9 @@
 <header class="cabecalho">
-  <a routerLink="/" class="logo">ShopManager</a>
-  <nav>
-    <a routerLink="/">Início</a>
-    <a routerLink="/admin" class="admin">Administração</a>
+  <a routerLink="/" class="logo">LojaDos400</a>
+
+  <nav aria-label="Navegação principal">
+    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+    <a routerLink="/produtos" routerLinkActive="ativo">Produtos</a>
+    <a routerLink="/admin" routerLinkActive="ativo" class="admin">Administração</a>
   </nav>
 </header>

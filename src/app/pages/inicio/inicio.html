@@ -1,0 +1,24 @@
+<section class="hero">
+  <div class="hero-texto">
+    <h1>Tecnologia que se ouve.</h1>
+    <p>Auscultadores, auriculares e acessórios das melhores marcas.</p>
+    <a routerLink="/produtos" class="botao">Ver produtos</a>
+  </div>
+  @if (destaques()[0]; as d) {
+    <img class="hero-img" [src]="d.thumbnail" [alt]="d.title" />
+  }
+</section>
+
+<h2>Em destaque</h2>
+
+@if (carregando()) {
+  <p>A carregar produtos...</p>
+} @else if (erro()) {
+  <p>Não foi possível carregar os produtos. Verifica se a API está a correr.</p>
+} @else {
+  <div class="grelha">
+    @for (produto of destaques(); track produto.id) {
+      <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
+    }
+  </div>
+}
