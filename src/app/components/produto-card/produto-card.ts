@@ -3,10 +3,11 @@ import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Produto } from '../../models/produto';
 
 @Component({
-  imports: [CurrencyPipe, TitleCasePipe],
   selector: 'app-produto-card',
-  styleUrl: './produto-card.css',
+  standalone: true,
+  imports: [CurrencyPipe, TitleCasePipe],
   templateUrl: './produto-card.html',
+  styleUrl: './produto-card.css',
 })
 export class ProdutoCard {
   @Input({ required: true }) produto!: Produto;

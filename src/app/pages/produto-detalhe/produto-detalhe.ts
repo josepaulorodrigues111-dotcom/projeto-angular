@@ -20,7 +20,7 @@ export class ProdutoDetalhe implements OnInit {
 
   ngOnInit(): void {
     // Lê o :id do endereço
-    const id = this.route.snapshot.paramMap.get('id')!;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.produtoService.obterPorId(id).subscribe({
       next: (p) => {

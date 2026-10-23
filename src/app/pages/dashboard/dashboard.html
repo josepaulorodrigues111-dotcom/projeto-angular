@@ -1,9 +1,9 @@
-<h1>Dashboard</h1>
+<h1>Administração</h1>
 
 @if (carregando()) {
   <p>A carregar dados...</p>
 } @else if (erro()) {
-  <p>Não foi possível carregar os dados. Verifica se a API está a correr.</p>
+  <p>Não foi possível carregar os dados. Tenta novamente mais tarde.</p>
 } @else {
   <div class="resumo">
     <div class="caixa">
@@ -31,5 +31,38 @@
     }
   </ul>
 
-  <a routerLink="/produtos">Ver todos os produtos →</a>
+  <div class="cabecalho-tabela">
+    <h2>Gestão de produtos</h2>
+    <a routerLink="/admin/novo" class="botao">+ Novo produto</a>
+  </div>
+
+  <div class="tabela-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Stock</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of produtos(); track p.id) {
+          <tr>
+            <td>{{ p.title }}</td>
+            <td>{{ p.category | titlecase }}</td>
+            <td>{{ p.price | currency: 'EUR' }}</td>
+            <td>{{ p.stock }}</td>
+            <td class="acoes">
+              <a [routerLink]="['/admin', p.id, 'editar']">Editar</a>
+              <button type="button" (click)="apagar(p)">Apagar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <a routerLink="/">← Voltar à loja</a>
 }

@@ -15,3 +15,21 @@
 .numero { font-size: 1.6rem; font-weight: bold; }
 .esgotado { color: #c62828; }
 .poucas { color: #ef6c00; }
+.cabecalho-tabela {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+.botao {
+  padding: 8px 16px;
+  background: #111;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.tabela-wrapper { overflow-x: auto; margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #eee; }
+.acoes { display: flex; gap: 12px; align-items: center; }
+.acoes button { cursor: pointer; }

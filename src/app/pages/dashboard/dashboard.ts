@@ -49,4 +49,14 @@ export class Dashboard implements OnInit {
       },
     });
   }
+
+  apagar(produto: Produto): void {
+    if (!confirm(`Apagar "${produto.title}"?`)) return;
+
+    this.produtoService.apagar(produto.id).subscribe({
+      next: () =>
+        this.produtos.update((lista) => lista.filter((p) => p.id !== produto.id)),
+      error: () => this.erro.set(true),
+    });
+  }
 }

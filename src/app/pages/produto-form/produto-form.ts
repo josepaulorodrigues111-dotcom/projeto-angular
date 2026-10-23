@@ -14,7 +14,7 @@ export class ProdutoForm implements OnInit {
   private readonly router = inject(Router);
   private readonly produtoService = inject(ProdutoService);
 
-  id: string | null = null;
+  id: number | null = null;
   carregando = signal(false);
   erro = signal(false);
 
@@ -50,9 +50,10 @@ export class ProdutoForm implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
+    const param = this.route.snapshot.paramMap.get('id');
+    this.id = param ? Number(param) : null;
 
-    if (this.id) {
+    if (this.id !== null) {
       this.carregando.set(true);
       this.produtoService.obterPorId(this.id).subscribe({
         next: (p) => {
@@ -74,13 +75,15 @@ export class ProdutoForm implements OnInit {
     }
 
     const dados = this.form.getRawValue();
+    const id = this.id;
 
-    const pedido = this.id
-      ? this.produtoService.editar(this.id, dados)
-      : this.produtoService.criar(dados);
+    const pedido =
+      id !== null
+        ? this.produtoService.editar(id, dados)
+        : this.produtoService.criar(dados);
 
     pedido.subscribe({
-      next: () => this.router.navigate(['/produtos']),
+      next: () => this.router.navigate(['/admin']),
       error: () => this.erro.set(true),
     });
   }

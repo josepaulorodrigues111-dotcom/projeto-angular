@@ -19,8 +19,6 @@
         @case (p.stock <= 5) { <p class="stock poucas">Apenas {{ p.stock }} unidades</p> }
         @default { <p class="stock disponivel">Em stock ({{ p.stock }})</p> }
       }
-
-      <a [routerLink]="['/produtos', p.id, 'editar']">Editar produto</a>
     </div>
   </article>
 }
