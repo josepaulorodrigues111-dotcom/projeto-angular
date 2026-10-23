@@ -1,3 +1,4 @@
+
 name: Deploy Angular to GitHub Pages
 
 on:
@@ -32,6 +33,42 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Configure Supabase environment
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const url = process.env.SUPABASE_URL;
+          const key = process.env.SUPABASE_KEY;
+
+          if (!url || !key) {
+            throw new Error(
+              'Faltam os GitHub Secrets SUPABASE_URL ou SUPABASE_KEY.'
+            );
+          }
+
+          const environment = {
+            production: true,
+            supabaseUrl: url,
+            supabaseKey: key
+          };
+
+          const content =
+            'export const environment = ' +
+            JSON.stringify(environment, null, 2) +
+            ';\n';
+
+          fs.writeFileSync(
+            'src/environments/environment.ts',
+            content
+          );
+
+          console.log('Ficheiro de ambiente de produção configurado.');
+          NODE
 
       - name: Build Angular Project
         run: npm run build -- --configuration production --base-href "/projeto-angular/"
