@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Produto } from '../../models/produto';
@@ -17,5 +18,18 @@ export class ProdutoCard {
     if (this.produto.stock === 0) return 'esgotado';
     if (this.produto.stock <= 5) return 'poucas';
     return 'disponivel';
+  }
+
+  caminhoImagem(caminho: string): string {
+    if (!caminho) return '';
+
+    if (caminho.startsWith('http')) {
+      return caminho;
+    }
+
+    return new URL(
+      caminho.replace(/^\//, ''),
+      document.baseURI
+    ).href;
   }
 }

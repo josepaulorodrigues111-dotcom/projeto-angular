@@ -1,5 +1,5 @@
 <article class="cartao">
-  <img [src]="produto.thumbnail" [alt]="produto.title" />
+  <img [src]="caminhoImagem(produto.thumbnail)" [alt]="produto.title" />
   <h3>{{ produto.title }}</h3>
   <p>{{ produto.description }}</p>
   <p class="categoria">{{ produto.category | titlecase }}</p>
