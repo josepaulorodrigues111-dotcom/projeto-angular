@@ -5,7 +5,11 @@
     <a routerLink="/produtos" class="botao">Ver produtos</a>
   </div>
   @if (destaques()[0]; as d) {
-    <img class="hero-img" [src]="d.thumbnail" [alt]="d.title" />
+   <img
+  class="hero-img"
+  [src]="'/projeto-angular/' + d.thumbnail.replace(/^\/+/, '')"
+  [alt]="d.title"
+/>
   }
 </section>
 
