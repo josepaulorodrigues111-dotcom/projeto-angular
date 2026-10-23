@@ -1,1 +1,111 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* ===== Estilos globais ===== */
+:root {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #171717;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --cor-texto: #171717;
+  --cor-secundaria: #737373;
+  --cor-borda: #e5e5e5;
+  --cor-fundo: #f7f7f7;
+  --cor-destaque: #111111;
+  --largura-maxima: 1280px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--cor-texto);
+  background: #ffffff;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+h2 {
+  margin: 0 0 24px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 650;
+}
+
+main {
+  width: min(calc(100% - 64px), var(--largura-maxima));
+  margin-inline: auto;
+  padding-block: 36px 64px;
+}
+
+button,
+.botao {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #525252;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  main {
+    width: calc(100% - 32px);
+    padding-block: 24px 40px;
+  }
+}

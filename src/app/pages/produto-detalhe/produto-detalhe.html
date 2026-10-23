@@ -1,24 +1,88 @@
-<a routerLink="/produtos">← Voltar à lista</a>
 
-@if (carregando()) {
-  <p>A carregar produto...</p>
-} @else if (erro()) {
-  <p>Não foi possível carregar o produto.</p>
-} @else if (produto(); as p) {
-  <article class="detalhe">
-    <img [src]="p.thumbnail" [alt]="p.title" />
+<div class="pagina-detalhe">
+  <a routerLink="/produtos" class="voltar">
+    <span aria-hidden="true">←</span>
+    Voltar aos produtos
+  </a>
 
-    <div class="info">
-      <h1>{{ p.title }}</h1>
-      <p class="categoria">{{ p.category | titlecase }}</p>
-      <p>{{ p.description }}</p>
-      <p class="preco">{{ p.price | currency: 'EUR' }}</p>
-
-      @switch (true) {
-        @case (p.stock === 0) { <p class="stock esgotado">Esgotado</p> }
-        @case (p.stock <= 5) { <p class="stock poucas">Apenas {{ p.stock }} unidades</p> }
-        @default { <p class="stock disponivel">Em stock ({{ p.stock }})</p> }
-      }
+  @if (carregando()) {
+    <div class="estado">
+      <div class="loader"></div>
+      <p>A carregar produto...</p>
     </div>
-  </article>
-}
+  } @else if (erro()) {
+    <section class="estado estado-erro">
+      <span class="icone-estado">!</span>
+      <h2>Não foi possível carregar o produto</h2>
+      <p>O produto pode não existir ou ocorreu um problema na ligação.</p>
+      <a routerLink="/produtos" class="botao-voltar">
+        Voltar à lista de produtos
+      </a>
+    </section>
+  } @else if (produto(); as p) {
+    <article class="detalhe">
+      <div class="imagem-container">
+        <span class="etiqueta-imagem">Produto</span>
+
+        <img
+          [src]="caminhoImagem(p.thumbnail)"
+          [alt]="p.title"
+        />
+      </div>
+
+      <div class="info">
+        <p class="categoria">
+          {{ p.category | titlecase }}
+        </p>
+
+        <h1>{{ p.title }}</h1>
+
+        <p class="descricao">
+          {{ p.description }}
+        </p>
+
+        <div class="separador"></div>
+
+        <div class="bloco-preco">
+          <span class="rotulo-preco">Preço</span>
+          <p class="preco">{{ p.price | currency: 'EUR' }}</p>
+        </div>
+
+        @switch (true) {
+          @case (p.stock === 0) {
+            <div class="stock esgotado">
+              <span class="ponto-stock"></span>
+              <div>
+                <strong>Esgotado</strong>
+                <p>Este produto não está disponível neste momento.</p>
+              </div>
+            </div>
+          }
+          @case (p.stock <= 5) {
+            <div class="stock poucas">
+              <span class="ponto-stock"></span>
+              <div>
+                <strong>Stock reduzido</strong>
+                <p>Apenas {{ p.stock }} unidades disponíveis.</p>
+              </div>
+            </div>
+          }
+          @default {
+            <div class="stock disponivel">
+              <span class="ponto-stock"></span>
+              <div>
+                <strong>Disponível</strong>
+                <p>{{ p.stock }} unidades em stock.</p>
+              </div>
+            </div>
+          }
+        }
+
+        <a routerLink="/produtos" class="botao">
+          Explorar outros produtos
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </article>
+  }
+</div>

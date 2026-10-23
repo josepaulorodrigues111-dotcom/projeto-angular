@@ -1,3 +1,4 @@
+
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ProdutoService } from '../../services/produto.service';
@@ -37,6 +38,23 @@ export class Inicio implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  // Constrói o caminho correto da imagem em localhost e no GitHub Pages
+  caminhoImagem(caminho: string): string {
+    if (!caminho) return '';
+
+    // Mantém URLs completos, por exemplo, imagens alojadas online
+    if (/^https?:\/\//i.test(caminho)) {
+      return caminho;
+    }
+
+    // Remove barras iniciais e o prefixo do GitHub Pages, se existir
+    const relativo = caminho
+      .replace(/^\/+/, '')
+      .replace(/^projeto-angular\//, '');
+
+    return new URL(relativo, document.baseURI).toString();
   }
 
   aoVerDetalhe(produto: Produto): void {

@@ -7,7 +7,7 @@
   @if (destaques()[0]; as d) {
    <img
   class="hero-img"
-  [src]="'/projeto-angular/' + d.thumbnail.replace(/^\/+/, '')"
+  [src]="caminhoImagem(d.thumbnail)"
   [alt]="d.title"
 />
   }
