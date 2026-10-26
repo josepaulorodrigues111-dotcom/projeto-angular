@@ -1,47 +1,134 @@
 
+/* Estrutura principal do footer */
 .rodape {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 40px;
-  padding: 48px max(32px, calc((100% - 1280px) / 2));
+  margin-top: 64px;
+  padding: 48px max(24px, calc((100% - 1280px) / 2)) 0;
   border-top: 1px solid #eeeeee;
   background: #ffffff;
   color: #171717;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
-.rodape strong {
-  display: block;
-  margin-bottom: 14px;
-  font-size: 14px;
-  font-weight: 650;
+/* Organização das colunas */
+.rodape-conteudo {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
+  gap: 40px;
+  padding-bottom: 40px;
 }
 
+/* Identidade da loja */
+.nome-loja {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #171717;
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+  text-decoration: none;
+}
+
+.ponto {
+  color: #737373;
+}
+
+.descricao-loja {
+  max-width: 260px;
+  color: #737373;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Títulos das colunas */
+.rodape-coluna h2 {
+  margin: 4px 0 18px;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Texto e links */
 .rodape p {
   margin: 8px 0;
   color: #737373;
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
-.rodape .copy {
-  grid-column: 1 / -1;
-  margin: 12px 0 0;
-  padding-top: 20px;
+.rodape-coluna a {
+  color: #737373;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.rodape-coluna a:hover {
+  color: #171717;
+}
+
+/* Destaque do horário */
+.rodape-coluna .horario-destaque {
+  color: #171717;
+  font-weight: 600;
+}
+
+/* Barra inferior */
+.rodape-inferior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
   border-top: 1px solid #eeeeee;
+}
+
+.rodape-inferior p {
+  margin: 0;
   color: #888888;
   font-size: 12px;
-  text-align: center;
 }
 
-@media (max-width: 700px) {
+.rodape-inferior .texto-final {
+  text-align: right;
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  .rodape-conteudo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+}
+
+/* Telemóveis */
+@media (max-width: 600px) {
   .rodape {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 32px 20px;
+    margin-top: 40px;
+    padding: 32px 20px 0;
   }
 
-  .rodape .copy {
-    grid-column: auto;
+  .rodape-conteudo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-bottom: 28px;
+  }
+
+  .nome-loja {
+    font-size: 21px;
+  }
+
+  .rodape-coluna h2 {
+    margin-bottom: 12px;
+  }
+
+  .rodape-inferior {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 0;
+  }
+
+  .rodape-inferior .texto-final {
+    text-align: left;
   }
 }
