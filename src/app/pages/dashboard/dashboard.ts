@@ -15,7 +15,7 @@ export class Dashboard implements OnInit {
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
-  erro = signal(false);
+  erro = signal('');
 
   total = computed(() => this.produtos().length);
   esgotados = computed(() => this.produtos().filter((p) => p.stock === 0).length);
@@ -43,8 +43,8 @@ export class Dashboard implements OnInit {
         this.produtos.set(lista);
         this.carregando.set(false);
       },
-      error: () => {
-        this.erro.set(true);
+      error: (err) => {
+        this.erro.set(this.produtoService.mensagemErro(err));
         this.carregando.set(false);
       },
     });
@@ -56,7 +56,7 @@ export class Dashboard implements OnInit {
     this.produtoService.apagar(produto.id).subscribe({
       next: () =>
         this.produtos.update((lista) => lista.filter((p) => p.id !== produto.id)),
-      error: () => this.erro.set(true),
+      error: (err) => this.erro.set(this.produtoService.mensagemErro(err)),
     });
   }
 }

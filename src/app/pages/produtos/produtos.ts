@@ -17,7 +17,7 @@ export class Produtos implements OnInit {
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
-  erro = signal(false);
+  erro = signal('');
 
   pesquisa = signal('');
   categoria = signal('');
@@ -51,8 +51,7 @@ export class Produtos implements OnInit {
         this.carregando.set(false);
       },
       error: (err) => {
-        console.error('Erro ao carregar produtos:', err);
-        this.erro.set(true);
+        this.erro.set(this.produtoService.mensagemErro(err));
         this.carregando.set(false);
       },
     });

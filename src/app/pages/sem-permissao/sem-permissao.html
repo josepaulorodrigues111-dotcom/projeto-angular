@@ -1,0 +1,10 @@
+<section class="sem-permissao">
+  @if (auth.erroAutorizacao()) {
+    <h1>Não foi possível confirmar as permissões</h1>
+    <p>A administração está bloqueada até ser possível validar o acesso com o Supabase. Tenta novamente mais tarde.</p>
+  } @else {
+    <h1>Acesso reservado</h1>
+    <p>A tua conta está autenticada, mas não está autorizada a gerir os produtos.</p>
+  }
+  <a routerLink="/produtos">Voltar ao catálogo</a>
+</section>

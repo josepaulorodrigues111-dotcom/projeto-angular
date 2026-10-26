@@ -17,14 +17,14 @@ export class ProdutoDetalhe implements OnInit {
 
   produto = signal<Produto | null>(null);
   carregando = signal(true);
-  erro = signal(false);
+  erro = signal('');
 
   ngOnInit(): void {
     // Lê o ID do produto a partir do endereço
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!Number.isInteger(id) || id <= 0) {
-      this.erro.set(true);
+      this.erro.set('O identificador do produto é inválido.');
       this.carregando.set(false);
       return;
     }
@@ -34,8 +34,8 @@ export class ProdutoDetalhe implements OnInit {
         this.produto.set(p);
         this.carregando.set(false);
       },
-      error: () => {
-        this.erro.set(true);
+      error: (err) => {
+        this.erro.set(this.produtoService.mensagemErro(err));
         this.carregando.set(false);
       },
     });

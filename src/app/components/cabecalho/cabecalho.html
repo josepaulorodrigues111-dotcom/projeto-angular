@@ -5,9 +5,11 @@
     <a routerLink="/">Início</a>
     <a routerLink="/produtos">Produtos</a>
 
-    @if (auth.autenticado()) {
+    @if (auth.administrador()) {
       <a routerLink="/admin" class="admin">Administração</a>
+    }
 
+    @if (auth.autenticado()) {
       <button
         type="button"
         class="botao-sair"
@@ -19,4 +21,7 @@
       <a routerLink="/login">Entrar</a>
     }
   </nav>
+  @if (erroSair) {
+    <p class="erro-sessao" role="alert">{{ erroSair }}</p>
+  }
 </header>

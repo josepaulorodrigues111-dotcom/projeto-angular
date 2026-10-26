@@ -1,19 +1,14 @@
 import { Routes } from '@angular/router';
-import { Inicio } from './pages/inicio/inicio';
-import { Produtos } from './pages/produtos/produtos';
-import { ProdutoDetalhe } from './pages/produto-detalhe/produto-detalhe';
-import { Login } from './pages/login/login';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { ProdutoForm } from './pages/produto-form/produto-form';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: Inicio },
-  { path: 'produtos', component: Produtos },
-  { path: 'produtos/:id', component: ProdutoDetalhe },
-  { path: 'login', component: Login },
-  { path: 'admin', component: Dashboard, canActivate: [authGuard] },
-  { path: 'admin/novo', component: ProdutoForm, canActivate: [authGuard] },
-  { path: 'admin/:id/editar', component: ProdutoForm, canActivate: [authGuard] },
+  { path: '', loadComponent: () => import('./pages/inicio/inicio').then((m) => m.Inicio) },
+  { path: 'produtos', loadComponent: () => import('./pages/produtos/produtos').then((m) => m.Produtos) },
+  { path: 'produtos/:id', loadComponent: () => import('./pages/produto-detalhe/produto-detalhe').then((m) => m.ProdutoDetalhe) },
+  { path: 'login', loadComponent: () => import('./pages/login/login').then((m) => m.Login) },
+  { path: 'sem-permissao', loadComponent: () => import('./pages/sem-permissao/sem-permissao').then((m) => m.SemPermissao) },
+  { path: 'admin', loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard), canActivate: [authGuard] },
+  { path: 'admin/novo', loadComponent: () => import('./pages/produto-form/produto-form').then((m) => m.ProdutoForm), canActivate: [authGuard] },
+  { path: 'admin/:id/editar', loadComponent: () => import('./pages/produto-form/produto-form').then((m) => m.ProdutoForm), canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 ];

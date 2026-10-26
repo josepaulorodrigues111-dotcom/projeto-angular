@@ -11,9 +11,15 @@ import { AuthService } from '../../services/auth.service';
 export class Cabecalho {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  erroSair = '';
 
   async sair(): Promise<void> {
-    await this.auth.sair();
-    this.router.navigate(['/']);
+    this.erroSair = '';
+    try {
+      await this.auth.sair();
+      await this.router.navigate(['/']);
+    } catch (error) {
+      this.erroSair = this.auth.mensagemErro(error);
+    }
   }
 }

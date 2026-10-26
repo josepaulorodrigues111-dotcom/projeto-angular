@@ -6,7 +6,7 @@
   <p>A carregar...</p>
 } @else {
   @if (erro()) {
-    <p class="erro">Ocorreu um erro. Verifica se a API está a correr.</p>
+    <p class="erro" role="alert">{{ erro() }}</p>
   }
 
   <form [formGroup]="form" (ngSubmit)="submeter()">

@@ -17,7 +17,7 @@ export class Inicio implements OnInit {
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
-  erro = signal(false);
+  erro = signal('');
 
   // 4 produtos em destaque: os mais caros que ainda têm stock
   destaques = computed(() =>
@@ -33,8 +33,8 @@ export class Inicio implements OnInit {
         this.produtos.set(lista);
         this.carregando.set(false);
       },
-      error: () => {
-        this.erro.set(true);
+      error: (err) => {
+        this.erro.set(this.produtoService.mensagemErro(err));
         this.carregando.set(false);
       },
     });

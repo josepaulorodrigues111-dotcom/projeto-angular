@@ -14,7 +14,7 @@
     <section class="estado estado-erro">
       <span class="icone-estado">!</span>
       <h2>Não foi possível carregar o produto</h2>
-      <p>O produto pode não existir ou ocorreu um problema na ligação.</p>
+      <p>{{ erro() }}</p>
       <a routerLink="/produtos" class="botao-voltar">
         Voltar à lista de produtos
       </a>

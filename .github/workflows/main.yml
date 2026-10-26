@@ -50,6 +50,28 @@ jobs:
             );
           }
 
+          if (key.startsWith('sb_secret_')) {
+            throw new Error('SUPABASE_KEY tem de ser uma chave pública anon/publishable.');
+          }
+
+          let parsedUrl;
+          try {
+            parsedUrl = new URL(url);
+          } catch {
+            throw new Error('SUPABASE_URL não contém um URL válido.');
+          }
+          if (!['https:', 'http:'].includes(parsedUrl.protocol)) {
+            throw new Error('SUPABASE_URL não contém um URL HTTP válido.');
+          }
+
+          const jwtPayload = key.split('.')[1];
+          if (jwtPayload) {
+            const payload = JSON.parse(Buffer.from(jwtPayload, 'base64url').toString('utf8'));
+            if (payload.role && payload.role !== 'anon') {
+              throw new Error('SUPABASE_KEY tem de ser uma chave pública anon/publishable.');
+            }
+          }
+
           const environment = {
             production: true,
             supabaseUrl: url,
@@ -70,7 +92,7 @@ jobs:
           NODE
 
       - name: Build Angular Project
-        run: npm run build -- --configuration production --base-href "/projeto-angular/"
+        run: npx ng build --configuration production --base-href "/projeto-angular/"
 
       - name: Configure GitHub Pages fallback
         run: cp dist/shop-manager/browser/index.html dist/shop-manager/browser/404.html

@@ -1,21 +1,36 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { Produto } from '../../models/produto';
+import { ProdutoService } from '../../services/produto.service';
 import { ProdutoDetalhe } from './produto-detalhe';
 
 describe('ProdutoDetalhe', () => {
-  let component: ProdutoDetalhe;
-  let fixture: ComponentFixture<ProdutoDetalhe>;
+  beforeEach(() => TestBed.resetTestingModule());
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  it('carrega e apresenta o produto identificado na rota', () => {
+    const produto: Produto = {
+      id: 5,
+      title: 'Coluna Bluetooth',
+      description: 'Coluna de teste',
+      price: 49,
+      category: 'audio',
+      stock: 6,
+      thumbnail: '/images/coluna.jpg',
+    };
+    TestBed.configureTestingModule({
       imports: [ProdutoDetalhe],
-    }).compileComponents();
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id: '5' }) } } },
+        { provide: ProdutoService, useValue: { obterPorId: () => of(produto) } },
+      ],
+    });
+    const fixture = TestBed.createComponent(ProdutoDetalhe);
+    fixture.detectChanges();
 
-    fixture = TestBed.createComponent(ProdutoDetalhe);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture.componentInstance.produto()).toEqual(produto);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Coluna Bluetooth');
   });
 });

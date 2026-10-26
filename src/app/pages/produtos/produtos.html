@@ -3,7 +3,7 @@
 @if (carregando()) {
   <p>A carregar produtos...</p>
 } @else if (erro()) {
-  <p>Não foi possível carregar os produtos. Verifica se a API está a correr.</p>
+  <p role="alert">{{ erro() }}</p>
 } @else {
   <div class="filtros">
     <input type="text" placeholder="Pesquisar por nome..." [(ngModel)]="pesquisa" />

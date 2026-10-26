@@ -16,7 +16,7 @@ export class ProdutoForm implements OnInit {
 
   id: number | null = null;
   carregando = signal(false);
-  erro = signal(false);
+  erro = signal('');
 
   form = new FormGroup({
     title: new FormControl('', {
@@ -60,8 +60,8 @@ export class ProdutoForm implements OnInit {
           this.form.patchValue(p);
           this.carregando.set(false);
         },
-        error: () => {
-          this.erro.set(true);
+        error: (err) => {
+          this.erro.set(this.produtoService.mensagemErro(err));
           this.carregando.set(false);
         },
       });
@@ -84,7 +84,7 @@ export class ProdutoForm implements OnInit {
 
     pedido.subscribe({
       next: () => this.router.navigate(['/admin']),
-      error: () => this.erro.set(true),
+      error: (err) => this.erro.set(this.produtoService.mensagemErro(err)),
     });
   }
 }

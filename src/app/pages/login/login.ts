@@ -13,7 +13,6 @@ export class Login {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  modoRegisto = signal(false);
   erro = signal('');
   aProcessar = signal(false);
 
@@ -28,11 +27,6 @@ export class Login {
     }),
   });
 
-  alternarModo(): void {
-    this.modoRegisto.update((v) => !v);
-    this.erro.set('');
-  }
-
   async submeter(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -44,14 +38,22 @@ export class Login {
     this.erro.set('');
 
     try {
-      if (this.modoRegisto()) {
-        await this.auth.registar(email, password);
-      } else {
-        await this.auth.entrar(email, password);
+      const iniciouSessao = await this.auth.entrar(email, password);
+      if (!iniciouSessao) {
+        this.erro.set('A conta existe, mas o email ainda não foi confirmado. Verifica a tua caixa de correio.');
+        return;
       }
-      this.router.navigate(['/admin']);
-    } catch {
-      this.erro.set('Não foi possível concluir. Verifica os dados e tenta novamente.');
+      if (this.auth.erroAutorizacao()) {
+        this.erro.set('A sessão foi iniciada, mas não foi possível confirmar as permissões. Tenta novamente mais tarde.');
+        return;
+      }
+      if (this.auth.administrador()) {
+        await this.router.navigate(['/admin']);
+      } else {
+        await this.router.navigate(['/sem-permissao']);
+      }
+    } catch (error) {
+      this.erro.set(this.auth.mensagemErro(error));
     } finally {
       this.aProcessar.set(false);
     }

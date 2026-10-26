@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, map, throwError } from 'rxjs';
 import { Produto } from '../models/produto';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
@@ -20,6 +20,7 @@ export class ProdutoService {
   }
 
   listar(): Observable<Produto[]> {
+    if (!this.auth.configurado) return this.configuracaoEmFalta();
     return this.http.get<Produto[]>(this.url, {
       headers: this.headers,
       params: { select: '*', order: 'id' },
@@ -27,6 +28,7 @@ export class ProdutoService {
   }
 
   obterPorId(id: number): Observable<Produto> {
+    if (!this.auth.configurado) return this.configuracaoEmFalta();
     return this.http.get<Produto>(this.url, {
       headers: this.headers.set('Accept', 'application/vnd.pgrst.object+json'),
       params: { select: '*', id: `eq.${id}` },
@@ -34,6 +36,7 @@ export class ProdutoService {
   }
 
   criar(produto: Omit<Produto, 'id'>): Observable<Produto> {
+    if (!this.auth.configurado) return this.configuracaoEmFalta();
     return this.http
       .post<Produto[]>(this.url, produto, {
         headers: this.headers.set('Prefer', 'return=representation'),
@@ -42,6 +45,7 @@ export class ProdutoService {
   }
 
   editar(id: number, produto: Partial<Produto>): Observable<Produto> {
+    if (!this.auth.configurado) return this.configuracaoEmFalta();
     return this.http
       .patch<Produto[]>(this.url, produto, {
         headers: this.headers.set('Prefer', 'return=representation'),
@@ -51,9 +55,28 @@ export class ProdutoService {
   }
 
   apagar(id: number): Observable<void> {
+    if (!this.auth.configurado) return this.configuracaoEmFalta();
     return this.http.delete<void>(this.url, {
       headers: this.headers,
       params: { id: `eq.${id}` },
     });
+  }
+
+  mensagemErro(error: unknown): string {
+    if (error instanceof Error && error.message.includes('Configuração local')) {
+      return error.message;
+    }
+    if (error instanceof HttpErrorResponse) {
+      const body = error.error as { code?: string } | null;
+      if (error.status === 401 || error.status === 403 || body?.code === '42501') {
+        return 'A operação foi recusada. Inicia sessão com uma conta autorizada.';
+      }
+      if (error.status === 0) return 'Não foi possível contactar o Supabase. Verifica a ligação.';
+    }
+    return 'Não foi possível concluir a operação. Verifica os dados e as permissões da base de dados.';
+  }
+
+  private configuracaoEmFalta<T>(): Observable<T> {
+    return throwError(() => new Error('Configuração local do Supabase em falta. Segue os passos do README.'));
   }
 }

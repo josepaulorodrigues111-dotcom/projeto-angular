@@ -7,16 +7,17 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class SupabaseService {
-  private readonly supabase: SupabaseClient;
+  private supabase: SupabaseClient | null = null;
 
-  constructor() {
-    this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
-    );
+  get configurado(): boolean {
+    return Boolean(environment.supabaseUrl && environment.supabaseKey);
   }
 
-  get client(): SupabaseClient {
+  get client(): SupabaseClient | null {
+    if (!this.configurado) return null;
+    if (!this.supabase) {
+      this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+    }
     return this.supabase;
   }
 }

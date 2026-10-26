@@ -1,5 +1,6 @@
 <section class="login">
-  <h1>{{ modoRegisto() ? 'Criar conta' : 'Entrar' }}</h1>
+  <h1>Entrar</h1>
+  <p>O acesso à administração é reservado a contas autorizadas.</p>
 
   <form [formGroup]="form" (ngSubmit)="submeter()">
     <label>
@@ -25,15 +26,11 @@
     }
 
     @if (erro()) {
-      <p class="erro">{{ erro() }}</p>
+      <p class="erro" role="alert">{{ erro() }}</p>
     }
 
     <button type="submit" [disabled]="form.invalid || aProcessar()">
-      {{ modoRegisto() ? 'Registar' : 'Entrar' }}
+      Entrar
     </button>
   </form>
-
-  <button type="button" class="link" (click)="alternarModo()">
-    {{ modoRegisto() ? 'Já tenho conta' : 'Criar uma conta' }}
-  </button>
 </section>

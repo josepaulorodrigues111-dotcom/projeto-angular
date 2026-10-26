@@ -1,21 +1,30 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { Produto } from '../../models/produto';
 import { ProdutoCard } from './produto-card';
 
 describe('ProdutoCard', () => {
-  let component: ProdutoCard;
-  let fixture: ComponentFixture<ProdutoCard>;
+  beforeEach(() => TestBed.resetTestingModule());
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ProdutoCard],
-    }).compileComponents();
+  it('mostra o produto e emite o evento para ver os detalhes', () => {
+    const produto: Produto = {
+      id: 9,
+      title: 'Teclado',
+      description: 'Teclado de teste',
+      price: 25,
+      category: 'gaming',
+      stock: 0,
+      thumbnail: '',
+    };
+    TestBed.configureTestingModule({ imports: [ProdutoCard] });
+    const fixture = TestBed.createComponent(ProdutoCard);
+    fixture.componentRef.setInput('produto', produto);
+    fixture.detectChanges();
+    let selecionado: Produto | undefined;
+    fixture.componentInstance.verDetalhe.subscribe((value) => (selecionado = value));
+    (fixture.nativeElement as HTMLElement).querySelector('button')?.click();
 
-    fixture = TestBed.createComponent(ProdutoCard);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Esgotado');
+    expect(selecionado).toEqual(produto);
   });
 });
