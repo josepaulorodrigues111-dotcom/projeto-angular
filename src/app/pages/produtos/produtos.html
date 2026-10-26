@@ -1,3 +1,4 @@
+
 <h1>Produtos</h1>
 
 @if (carregando()) {
@@ -5,21 +6,84 @@
 } @else if (erro()) {
   <p role="alert">{{ erro() }}</p>
 } @else {
-  <div class="filtros">
-    <input type="text" placeholder="Pesquisar por nome..." [(ngModel)]="pesquisa" />
-    <select [(ngModel)]="categoria">
-      <option value="">Todas as categorias</option>
-      @for (c of categorias(); track c) {
-        <option [value]="c">{{ c }}</option>
-      }
-    </select>
-  </div>
+  <section class="painel-produtos" aria-label="Pesquisar e filtrar produtos">
+    <div class="introducao-filtros">
+      <h2>Explorar produtos</h2>
+      <p>Encontra o que procuras na nossa coleção.</p>
+    </div>
+
+    <div class="filtros">
+      <div class="campo-pesquisa">
+        <label for="pesquisa-produtos">Pesquisar produtos</label>
+
+        <div class="input-com-icone">
+          <svg
+            class="icone-pesquisa"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+
+          <input
+            id="pesquisa-produtos"
+            type="search"
+            placeholder="Pesquisar por nome..."
+            [ngModel]="pesquisa()"
+            (ngModelChange)="pesquisa.set($event)"
+          />
+        </div>
+      </div>
+
+      <div class="campo-categoria">
+        <label id="label-categorias">Categorias</label>
+
+        <div class="lista-categorias" aria-labelledby="label-categorias">
+          <button
+            type="button"
+            class="botao-categoria"
+            [class.ativa]="categoria() === ''"
+            [attr.aria-pressed]="categoria() === ''"
+            (click)="categoria.set('')"
+          >
+            Todas
+          </button>
+
+          @for (c of categorias(); track c) {
+            <button
+              type="button"
+              class="botao-categoria"
+              [class.ativa]="categoria() === c"
+              [attr.aria-pressed]="categoria() === c"
+              (click)="categoria.set(c)"
+            >
+              {{ c }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="grelha">
     @for (produto of produtosFiltrados(); track produto.id) {
-      <app-produto-card [produto]="produto" (verDetalhe)="aoVerDetalhe($event)" />
+      <app-produto-card
+        [produto]="produto"
+        (verDetalhe)="aoVerDetalhe($event)"
+      />
     } @empty {
-      <p>Sem resultados.</p>
+      <p class="sem-resultados">
+        Não foram encontrados produtos.
+      </p>
     }
   </div>
 }
