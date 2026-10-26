@@ -1,0 +1,8 @@
+.login { max-width: 360px; margin: 0 auto; }
+form { display: flex; flex-direction: column; gap: 8px; }
+label { display: flex; flex-direction: column; gap: 4px; font-weight: bold; }
+input { padding: 8px; font-size: 1rem; font-weight: normal; }
+.erro { color: #c62828; margin: 0; font-size: 0.85rem; }
+button { padding: 10px; cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.link { background: none; border: none; color: #555; text-decoration: underline; margin-top: 8px; }

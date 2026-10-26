@@ -1,0 +1,39 @@
+<section class="login">
+  <h1>{{ modoRegisto() ? 'Criar conta' : 'Entrar' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submeter()">
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <p class="erro">
+        @if (form.controls.email.errors?.['required']) { O email é obrigatório. }
+        @else { Introduz um email válido. }
+      </p>
+    }
+
+    <label>
+      Palavra-passe
+      <input type="password" formControlName="password" />
+    </label>
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <p class="erro">
+        @if (form.controls.password.errors?.['required']) { A palavra-passe é obrigatória. }
+        @else { A palavra-passe deve ter pelo menos 6 caracteres. }
+      </p>
+    }
+
+    @if (erro()) {
+      <p class="erro">{{ erro() }}</p>
+    }
+
+    <button type="submit" [disabled]="form.invalid || aProcessar()">
+      {{ modoRegisto() ? 'Registar' : 'Entrar' }}
+    </button>
+  </form>
+
+  <button type="button" class="link" (click)="alternarModo()">
+    {{ modoRegisto() ? 'Já tenho conta' : 'Criar uma conta' }}
+  </button>
+</section>

@@ -3,16 +3,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Produto } from '../models/produto';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProdutoService {
   private readonly http = inject(HttpClient);
+  private readonly auth = inject(AuthService);
   private readonly url = `${environment.supabaseUrl}/rest/v1/produtos`;
 
+  // Sem sessão usa a chave pública (leitura); com sessão usa o token do utilizador (escrita)
   private get headers(): HttpHeaders {
     return new HttpHeaders({
       apikey: environment.supabaseKey,
-      Authorization: `Bearer ${environment.supabaseKey}`,
+      Authorization: `Bearer ${this.auth.token ?? environment.supabaseKey}`,
     });
   }
 

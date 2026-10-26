@@ -1,9 +1,14 @@
 <header class="cabecalho">
   <a routerLink="/" class="logo">LojaDos400</a>
 
-  <nav aria-label="Navegação principal">
-    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Início</a>
-    <a routerLink="/produtos" routerLinkActive="ativo">Produtos</a>
-    <a routerLink="/admin" routerLinkActive="ativo" class="admin">Administração</a>
-  </nav>
+  <nav>
+  <a routerLink="/">Início</a>
+  <a routerLink="/produtos">Produtos</a>
+  @if (auth.autenticado()) {
+    <a routerLink="/admin" class="admin">Administração</a>
+    <button type="button" (click)="sair()">Sair</button>
+  } @else {
+    <a routerLink="/login">Entrar</a>
+  }
+</nav>
 </header>
