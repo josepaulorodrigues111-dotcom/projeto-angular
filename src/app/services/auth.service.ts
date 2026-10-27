@@ -1,4 +1,5 @@
-import { Injectable, computed, signal } from '@angular/core';
+
+import { Injectable, signal } from '@angular/core';
 import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
@@ -8,54 +9,139 @@ export class AuthService {
     environment.supabaseUrl,
     environment.supabaseKey
   );
+
   private readonly pronta: Promise<void>;
 
-  sessao = signal<Session | null>(null);
-  autenticado = computed(() => this.sessao() !== null);
-  eAdmin = computed(
-    () =>
-      this.sessao()?.user.email?.toLowerCase() ===
-      environment.adminEmail.toLowerCase()
-  );
+  readonly sessao = signal<Session | null>(null);
+  readonly autenticado = signal(false);
+  readonly eAdmin = signal(false);
 
   constructor() {
-    this.pronta = this.client.auth
-      .getSession()
-      .then(({ data }) => this.sessao.set(data.session));
-    this.client.auth.onAuthStateChange((_evento, sessao) => this.sessao.set(sessao));
+    this.pronta = this.client.auth.getSession().then(async ({ data }) => {
+      this.atualizarSessao(data.session);
+      await this.verificarAdministrador(data.session);
+    });
+
+    this.client.auth.onAuthStateChange((_evento, sessao) => {
+      this.atualizarSessao(sessao);
+
+      if (!sessao) {
+        this.eAdmin.set(false);
+        return;
+      }
+
+      // A consulta à base de dados é feita fora do callback de autenticação.
+      setTimeout(() => {
+        void this.verificarAdministrador(sessao);
+      }, 0);
+    });
   }
 
-  // Os guards esperam que a sessão guardada seja recuperada
+  private atualizarSessao(sessao: Session | null): void {
+    this.sessao.set(sessao);
+    this.autenticado.set(sessao !== null);
+
+    if (!sessao) {
+      this.eAdmin.set(false);
+    }
+  }
+
+  private async verificarAdministrador(
+    sessao: Session | null
+  ): Promise<void> {
+    if (!sessao) {
+      this.eAdmin.set(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await this.client.rpc(
+        'shop_manager_is_admin'
+      );
+
+      // Uma resposta antiga nunca deve alterar a permissão de outra sessão.
+      if (this.sessao()?.user.id !== sessao.user.id) {
+        return;
+      }
+
+      this.eAdmin.set(!error && data === true);
+    } catch {
+      // Se não for possível confirmar a autorização, não conceder acesso.
+      if (this.sessao()?.user.id === sessao.user.id) {
+        this.eAdmin.set(false);
+      }
+    }
+  }
+
   aguardarSessao(): Promise<void> {
     return this.pronta;
   }
 
   async entrar(email: string, password: string): Promise<void> {
-    const { data, error } = await this.client.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    this.sessao.set(data.session);
+    const { data, error } = await this.client.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    this.atualizarSessao(data.session);
+    await this.verificarAdministrador(data.session);
   }
 
   async registar(email: string, password: string): Promise<void> {
-    const { data, error } = await this.client.auth.signUp({ email, password });
-    if (error) throw error;
-    this.sessao.set(data.session);
+    const { data, error } = await this.client.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    this.atualizarSessao(data.session);
+    await this.verificarAdministrador(data.session);
   }
 
   async sair(): Promise<void> {
-    await this.client.auth.signOut();
-    this.sessao.set(null);
+    const { error } = await this.client.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+
+    this.atualizarSessao(null);
   }
 
   mensagemErro(error: unknown): string {
-    const mensagem = error instanceof Error ? error.message.toLowerCase() : '';
-    if (mensagem.includes('invalid login credentials')) return 'Email ou palavra-passe incorretos.';
-    if (mensagem.includes('email not confirmed')) return 'Confirma o email antes de iniciar sessão.';
-    if (mensagem.includes('already registered')) return 'Este email já tem conta.';
-    if (mensagem.includes('signups not allowed') || mensagem.includes('signup_disabled'))
+    const mensagem =
+      error instanceof Error ? error.message.toLowerCase() : '';
+
+    if (mensagem.includes('invalid login credentials')) {
+      return 'Email ou palavra-passe incorretos.';
+    }
+
+    if (mensagem.includes('email not confirmed')) {
+      return 'Confirma o email antes de iniciar sessão.';
+    }
+
+    if (mensagem.includes('already registered')) {
+      return 'Este email já tem conta.';
+    }
+
+    if (
+      mensagem.includes('signups not allowed') ||
+      mensagem.includes('signup_disabled')
+    ) {
       return 'O registo de novas contas está temporariamente desativado.';
-    if (mensagem.includes('network') || mensagem.includes('fetch'))
+    }
+
+    if (mensagem.includes('network') || mensagem.includes('fetch')) {
       return 'Não foi possível contactar o Supabase. Verifica a ligação.';
+    }
+
     return 'Não foi possível concluir a operação. Verifica os dados e tenta novamente.';
   }
 

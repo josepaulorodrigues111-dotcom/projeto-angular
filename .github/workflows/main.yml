@@ -38,24 +38,22 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
         run: |
           node <<'NODE'
           const fs = require('node:fs');
 
           const url = process.env.SUPABASE_URL;
           const key = process.env.SUPABASE_KEY;
-          const adminEmail = process.env.ADMIN_EMAIL;
 
-          if (!url || !key || !adminEmail) {
+          if (!url || !key) {
             throw new Error(
-              'Faltam os GitHub Secrets SUPABASE_URL, SUPABASE_KEY ou ADMIN_EMAIL.'
+              'Faltam os GitHub Secrets SUPABASE_URL ou SUPABASE_KEY.'
             );
           }
 
           if (key.startsWith('sb_secret_')) {
             throw new Error(
-              'SUPABASE_KEY tem de ser uma chave pública anon/publishable.'
+              'SUPABASE_KEY tem de ser uma chave pública anon/publishable, nunca uma chave secreta.'
             );
           }
 
@@ -90,14 +88,15 @@ jobs:
               throw error;
             }
 
-            throw new Error('Não foi possível validar o formato de SUPABASE_KEY.');
+            throw new Error(
+              'Não foi possível validar o formato de SUPABASE_KEY.'
+            );
           }
 
           const environment = {
             production: true,
             supabaseUrl: url,
-            supabaseKey: key,
-            adminEmail
+            supabaseKey: key
           };
 
           const content =
