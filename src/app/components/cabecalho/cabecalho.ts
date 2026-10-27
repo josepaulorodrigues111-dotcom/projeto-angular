@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   selector: 'app-cabecalho',
   styleUrl: './cabecalho.css',
   templateUrl: './cabecalho.html',
@@ -17,6 +17,7 @@ export class Cabecalho {
 
   async sair(): Promise<void> {
     this.erroSair = '';
+
     try {
       await this.auth.sair();
       this.carrinho.limpar();

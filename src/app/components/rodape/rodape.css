@@ -1,14 +1,19 @@
-/* Estrutura principal do footer */
+
+:host {
+  display: block;
+  margin-top: auto;
+}
+
 .rodape {
   margin-top: 64px;
   padding: 48px max(24px, calc((100% - 1280px) / 2)) 0;
-  border-top: 1px solid #eeeeee;
-  background: #ffffff;
+  border-top: 1px solid #eaeaea;
+  background: #fff;
   color: #171717;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
-/* Organização das colunas */
+/* Organização principal */
 .rodape-conteudo {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
@@ -16,15 +21,31 @@
   padding-bottom: 40px;
 }
 
-/* Identidade da loja */
+/* Marca */
 .nome-loja {
-  display: inline-block;
-  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
   color: #171717;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 750;
-  letter-spacing: -0.8px;
+  letter-spacing: -0.6px;
   text-decoration: none;
+}
+
+.simbolo-loja {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #171717;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .ponto {
@@ -32,27 +53,39 @@
 }
 
 .descricao-loja {
-  max-width: 260px;
+  max-width: 270px;
+  margin: 0;
   color: #737373;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.8;
 }
 
-/* Títulos das colunas */
-.rodape-coluna h2 {
-  margin: 4px 0 18px;
-  color: #171717;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+/* Colunas */
+.rodape-coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
 }
 
-/* Texto e links */
+.rodape-coluna h2 {
+  margin: 4px 0 7px;
+  color: #171717;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
 .rodape p {
-  margin: 8px 0;
   color: #737373;
   font-size: 13px;
   line-height: 1.7;
+}
+
+.rodape-coluna p {
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .rodape-coluna a {
@@ -65,10 +98,20 @@
   color: #171717;
 }
 
-/* Destaque do horário */
+.rodape-coluna a:focus-visible,
+.nome-loja:focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
 .rodape-coluna .horario-destaque {
   color: #171717;
-  font-weight: 600;
+  font-weight: 650;
+}
+
+.link-navegacao {
+  font-size: 13px;
 }
 
 /* Barra inferior */
@@ -78,12 +121,12 @@
   justify-content: space-between;
   gap: 20px;
   padding: 20px 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eaeaea;
 }
 
 .rodape-inferior p {
   margin: 0;
-  color: #888888;
+  color: #888;
   font-size: 12px;
 }
 
@@ -93,9 +136,14 @@
 
 /* Tablets */
 @media (max-width: 900px) {
+  .rodape {
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
   .rodape-conteudo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px;
+    gap: 36px 28px;
   }
 }
 
@@ -113,21 +161,35 @@
   }
 
   .nome-loja {
-    font-size: 21px;
+    font-size: 20px;
+  }
+
+  .descricao-loja {
+    max-width: 320px;
+  }
+
+  .rodape-coluna {
+    gap: 10px;
   }
 
   .rodape-coluna h2 {
-    margin-bottom: 12px;
+    margin-bottom: 5px;
   }
 
   .rodape-inferior {
     align-items: flex-start;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     padding: 18px 0;
   }
 
   .rodape-inferior .texto-final {
     text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rodape-coluna a {
+    transition: none;
   }
 }

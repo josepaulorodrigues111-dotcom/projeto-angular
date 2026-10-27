@@ -23,7 +23,6 @@ export class Produtos implements OnInit {
   pesquisa = signal('');
   categoria = signal('');
 
-  // Permite usar [(ngModel)] com o signal pesquisa.
   get textoPesquisa(): string {
     return this.pesquisa();
   }
@@ -47,13 +46,6 @@ export class Produtos implements OnInit {
     );
   });
 
-  destaques = computed(() =>
-    [...this.produtos()]
-      .filter((p) => p.stock > 0)
-      .sort((a, b) => b.price - a.price)
-      .slice(0, 4)
-  );
-
   ngOnInit(): void {
     this.produtoService.listar().subscribe({
       next: (lista) => {
@@ -65,6 +57,11 @@ export class Produtos implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  limparFiltros(): void {
+    this.pesquisa.set('');
+    this.categoria.set('');
   }
 
   aoVerDetalhe(produto: Produto): void {

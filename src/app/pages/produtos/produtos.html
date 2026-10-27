@@ -1,20 +1,40 @@
 
-<h1>Produtos</h1>
+<section class="pagina-produtos">
+  <header class="cabecalho-produtos">
+    <div>
+      <h1>Produtos</h1>
+      <p class="subtitulo">Encontra o que procuras na nossa coleção.</p>
+    </div>
+  </header>
 
-@if (carregando()) {
-  <p>A carregar produtos...</p>
-} @else if (erro()) {
-  <p role="alert">{{ erro() }}</p>
-} @else {
-  <section class="painel-produtos" aria-label="Pesquisar e filtrar produtos">
-    <div class="introducao-filtros">
-      <h2>Explorar produtos</h2>
-      <p>Encontra o que procuras na nossa coleção.</p>
+  @if (carregando()) {
+    <p class="estado-pagina">A carregar produtos...</p>
+  } @else if (erro()) {
+    <p class="estado-erro" role="alert">{{ erro() }}</p>
+  } @else {
+    <div class="resultados-cabecalho">
+      <p aria-live="polite">
+        {{ produtosFiltrados().length }}
+        {{ produtosFiltrados().length === 1 ? 'produto encontrado' : 'produtos encontrados' }}
+      </p>
+
+      @if (pesquisa().trim() || categoria()) {
+        <button
+          type="button"
+          class="limpar-filtros"
+          (click)="limparFiltros()"
+        >
+          Limpar filtros
+          <span aria-hidden="true">×</span>
+        </button>
+      }
     </div>
 
-    <div class="filtros">
+    <section class="painel-produtos" aria-label="Pesquisar e filtrar produtos">
       <div class="campo-pesquisa">
-        <label for="pesquisa-produtos">Pesquisar produtos</label>
+        <label class="visualmente-oculto" for="pesquisa-produtos">
+          Pesquisar produtos
+        </label>
 
         <div class="input-com-icone">
           <svg
@@ -45,9 +65,11 @@
       </div>
 
       <div class="campo-categoria">
-        <label id="label-categorias">Categorias</label>
+        <span class="titulo-categorias" id="label-categorias">
+          Categorias
+        </span>
 
-        <div class="lista-categorias" aria-labelledby="label-categorias">
+        <div class="lista-categorias" role="group" aria-labelledby="label-categorias">
           <button
             type="button"
             class="botao-categoria"
@@ -71,19 +93,28 @@
           }
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="grelha">
-    @for (produto of produtosFiltrados(); track produto.id) {
-      <app-produto-card
-        [produto]="produto"
-        (verDetalhe)="aoVerDetalhe($event)"
-      />
-    } @empty {
-      <p class="sem-resultados">
-        Não foram encontrados produtos.
-      </p>
-    }
-  </div>
-}
+    <section class="grelha" aria-label="Lista de produtos">
+      @for (produto of produtosFiltrados(); track produto.id) {
+        <app-produto-card
+          [produto]="produto"
+          (verDetalhe)="aoVerDetalhe($event)"
+        />
+      } @empty {
+        <div class="sem-resultados">
+          <h2>Não encontrámos produtos</h2>
+          <p>Experimenta alterar a pesquisa ou escolher outra categoria.</p>
+
+          <button
+            type="button"
+            class="botao-limpar"
+            (click)="limparFiltros()"
+          >
+            Limpar pesquisa e filtros
+          </button>
+        </div>
+      }
+    </section>
+  }
+</section>

@@ -1,38 +1,66 @@
 <header class="cabecalho">
-  <a routerLink="/" class="logo">LojaDos400</a>
+  <a routerLink="/" class="logo" aria-label="LojaDos400 - Página inicial">
+    <span class="logo-marca">L</span>
+    <span>LojaDos400</span>
+  </a>
 
-  <nav>
-    <a routerLink="/">Início</a>
-    <a routerLink="/produtos">Produtos</a>
+  <nav aria-label="Navegação principal">
+    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">
+      Início
+    </a>
 
-    <a routerLink="/carrinho" class="carrinho" aria-label="Carrinho">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
-           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <a routerLink="/produtos" routerLinkActive="ativo">
+      Produtos
+    </a>
+
+    @if (auth.eAdmin()) {
+      <a routerLink="/admin" routerLinkActive="ativo" class="admin">
+        Administração
+      </a>
+    }
+  </nav>
+
+  <div class="acoes-cabecalho">
+    <a
+      routerLink="/carrinho"
+      routerLinkActive="ativo"
+      class="carrinho"
+      aria-label="Carrinho"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <circle cx="9" cy="20" r="1.5" />
         <circle cx="18" cy="20" r="1.5" />
         <path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 7H6" />
       </svg>
+
+      <span class="texto-carrinho">Carrinho</span>
+
       @if (carrinho.quantidadeTotal() > 0) {
         <span class="contador">{{ carrinho.quantidadeTotal() }}</span>
       }
     </a>
 
-    @if (auth.eAdmin()) {
-      <a routerLink="/admin" class="admin">Administração</a>
-    }
-
     @if (auth.autenticado()) {
-      <button
-        type="button"
-        class="botao-sair"
-        (click)="sair()"
-      >
+      <button type="button" class="botao-sair" (click)="sair()">
         Sair
       </button>
     } @else {
-      <a routerLink="/login">Entrar</a>
+      <a routerLink="/login" routerLinkActive="ativo" class="botao-entrar">
+        Entrar
+      </a>
     }
-  </nav>
+  </div>
+
   @if (erroSair) {
     <p class="erro-sessao" role="alert">{{ erroSair }}</p>
   }

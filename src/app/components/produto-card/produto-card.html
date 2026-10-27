@@ -1,13 +1,16 @@
 
 <article class="cartao">
-  <img
-    [src]="caminhoImagem(produto.thumbnail)"
-    [alt]="produto.title"
-  />
+  <div class="imagem-container">
+    <img
+      [src]="caminhoImagem(produto.thumbnail)"
+      [alt]="produto.title"
+      loading="lazy"
+    />
+  </div>
 
   <h3>{{ produto.title }}</h3>
 
-  <p>{{ produto.description }}</p>
+  <p class="descricao">{{ produto.description }}</p>
 
   <p class="categoria">
     {{ produto.category | titlecase }}
@@ -19,15 +22,20 @@
 
   @switch (disponibilidade) {
     @case ('esgotado') {
-      <p class="stock esgotado">Esgotado</p>
+      <p class="stock esgotado">
+        <span class="ponto-stock" aria-hidden="true"></span>
+        Esgotado
+      </p>
     }
     @case ('poucas') {
       <p class="stock poucas">
+        <span class="ponto-stock" aria-hidden="true"></span>
         Apenas {{ produto.stock }} unidades
       </p>
     }
     @default {
       <p class="stock disponivel">
+        <span class="ponto-stock" aria-hidden="true"></span>
         Em stock ({{ produto.stock }})
       </p>
     }
@@ -36,6 +44,7 @@
   <button
     type="button"
     (click)="verDetalhe.emit(produto)"
+    [attr.aria-label]="'Ver detalhes de ' + produto.title"
   >
     Ver detalhes
   </button>

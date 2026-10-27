@@ -1,135 +1,232 @@
 
-.cartao {
-  display: flex;
+:host {
+  display: block;
   min-width: 0;
   height: 100%;
+}
+
+.cartao {
+  display: flex;
   box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
   flex-direction: column;
   gap: 10px;
   padding: 14px;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
   background: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .cartao:hover {
-  border-color: #d0d0d0;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
   transform: translateY(-2px);
+  border-color: #d4d4d4;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 5%);
 }
 
-/* Área da imagem do produto */
-.cartao img {
-  display: block;
-  box-sizing: border-box;
+/* Imagem */
+.imagem-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 210px;
+  height: 190px;
   flex-shrink: 0;
-  padding: 4px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.imagem-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  box-sizing: border-box;
   object-fit: contain;
   object-position: center;
-  background-color: #fff;
-  border-radius: 4px;
 }
 
-/* Título com espaço reservado uniforme */
+/* Nome do produto */
 .cartao h3 {
+  display: -webkit-box;
   min-height: 2.8em;
-  margin: 4px 0 0;
-  font-size: 1rem;
+  overflow: hidden;
+  margin: 2px 0 0;
+  color: #171717;
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: -0.02em;
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-/* Descrição limitada a duas linhas */
-.cartao > p:not(.categoria):not(.preco):not(.stock) {
+/* Descrição */
+.descricao {
   display: -webkit-box;
   min-height: 3em;
   overflow: hidden;
   margin: 0;
   color: #737373;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
 /* Categoria */
 .categoria {
-  min-height: 1.5em;
+  min-height: 1.4em;
   margin: 0;
   color: #737373;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.4;
   text-transform: capitalize;
 }
 
-/* Preço alinhado */
+/* Preço */
 .preco {
-  margin: 4px 0;
-  color: #111;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-/* Stock */
-.stock {
   margin: 0;
-  font-size: 12px;
+  color: #171717;
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.4;
 }
 
-.esgotado {
-  color: #c62828;
+/* Disponibilidade */
+.stock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 1.5em;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-.poucas {
-  color: #b45309;
+.ponto-stock {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
 }
 
 .disponivel {
   color: #267343;
 }
 
-/* Botão alinhado na parte inferior */
+.disponivel .ponto-stock {
+  background: #16a34a;
+}
+
+.poucas {
+  color: #a16207;
+}
+
+.poucas .ponto-stock {
+  background: #d97706;
+}
+
+.esgotado {
+  color: #b91c1c;
+}
+
+.esgotado .ponto-stock {
+  background: #dc2626;
+}
+
+/* Botão */
 .cartao button {
+  box-sizing: border-box;
   width: 100%;
-  min-height: 42px;
+  min-height: 40px;
   margin-top: auto;
   padding: 10px 12px;
-  box-sizing: border-box;
   border: 1px solid #171717;
-  border-radius: 4px;
+  border-radius: 7px;
   background: #171717;
   color: #fff;
-  font-size: 13px;
-  font-weight: 600;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
   cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .cartao button:hover {
-  background: #333;
   border-color: #333;
+  background: #333;
 }
 
-/* Adaptação a dispositivos móveis */
+.cartao button:focus-visible {
+  outline: 2px solid #737373;
+  outline-offset: 3px;
+}
+
+/* Tablets e ecrãs médios */
+@media (max-width: 1100px) {
+  .imagem-container {
+    height: 175px;
+  }
+}
+
+/* Telemóveis */
 @media (max-width: 700px) {
   .cartao {
-    padding: 10px;
     gap: 8px;
+    padding: 10px;
+    border-radius: 9px;
   }
 
-  .cartao img {
-    height: 170px;
-    padding: 2px;
+  .imagem-container {
+    height: 155px;
   }
 
   .cartao h3 {
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .descricao {
+    font-size: 12px;
   }
 
   .preco {
-    font-size: 1rem;
+    font-size: 15px;
+  }
+
+  .cartao button {
+    min-height: 39px;
+    padding: 9px 8px;
+  }
+}
+
+/* Ecrãs muito pequenos */
+@media (max-width: 380px) {
+  .imagem-container {
+    height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cartao,
+  .cartao button {
+    transition: none;
+  }
+
+  .cartao:hover {
+    transform: none;
   }
 }

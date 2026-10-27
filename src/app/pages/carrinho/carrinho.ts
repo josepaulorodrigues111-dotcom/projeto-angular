@@ -14,7 +14,7 @@ export class Carrinho {
   compraConcluida = signal(false);
 
   finalizar(): void {
-    // Simulação: não há encomendas na base de dados
+    // Simulação: não há encomendas na base de dados.
     this.carrinho.limpar();
     this.compraConcluida.set(true);
   }

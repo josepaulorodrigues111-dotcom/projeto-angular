@@ -1,59 +1,142 @@
-<h1>Carrinho</h1>
+<div class="carrinho-pagina">
+  <header class="cabecalho-carrinho">
+    <div>
+      <p class="sobretitulo">A TUA SELEÇÃO</p>
+      <h1>O teu carrinho</h1>
+      <p class="descricao-carrinho">Confirma os teus produtos antes de finalizar a compra.</p>
+    </div>
 
-@if (compraConcluida()) {
-  <div class="mensagem">
-    <p>Compra simulada concluída. Obrigado!</p>
-    <a routerLink="/produtos">Continuar a comprar</a>
-  </div>
-} @else if (carrinho.itens().length === 0) {
-  <div class="mensagem">
-    <p>O carrinho está vazio.</p>
-    <a routerLink="/produtos">← Ver produtos</a>
-  </div>
-} @else {
-  <div class="tabela-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Produto</th>
-          <th>Preço</th>
-          <th>Quantidade</th>
-          <th>Subtotal</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
+    @if (carrinho.itens().length > 0 && !compraConcluida()) {
+      <span class="contador-itens">
+        {{ carrinho.itens().length }}
+        {{ carrinho.itens().length === 1 ? 'produto' : 'produtos' }}
+      </span>
+    }
+  </header>
+
+  @if (compraConcluida()) {
+    <section class="estado-carrinho sucesso">
+      <div class="icone-estado">✓</div>
+      <h2>Compra concluída!</h2>
+      <p>A tua compra simulada foi concluída com sucesso. Obrigado!</p>
+      <a class="botao botao-principal" routerLink="/produtos">Continuar a comprar</a>
+    </section>
+  } @else if (carrinho.itens().length === 0) {
+    <section class="estado-carrinho">
+      <div class="icone-estado">🛒</div>
+      <h2>O teu carrinho está vazio</h2>
+      <p>Ainda não adicionaste produtos. Descobre os artigos disponíveis na nossa loja.</p>
+      <a class="botao botao-principal" routerLink="/produtos">Explorar produtos</a>
+    </section>
+  } @else {
+    <div class="conteudo-carrinho">
+      <section class="lista-carrinho">
+        <div class="titulo-lista">
+          <h2>Produtos selecionados</h2>
+          <span>Altera as quantidades ou remove artigos.</span>
+        </div>
+
         @for (item of carrinho.itens(); track item.produto.id) {
-          <tr>
-            <td><img [src]="item.produto.thumbnail" [alt]="item.produto.title" /></td>
-            <td>{{ item.produto.title }}</td>
-            <td>{{ item.produto.price | currency: 'EUR' }}</td>
-            <td>
+          <article class="produto-carrinho">
+            <a
+              class="imagem-produto"
+              [routerLink]="['/produtos', item.produto.id]"
+              [attr.aria-label]="'Ver detalhes de ' + item.produto.title"
+            >
+              <img [src]="item.produto.thumbnail" [alt]="item.produto.title" />
+            </a>
+
+            <div class="informacao-produto">
+              <a class="nome-produto" [routerLink]="['/produtos', item.produto.id]">
+                {{ item.produto.title }}
+              </a>
+              <p class="preco-unitario">{{ item.produto.price | currency: 'EUR' }}</p>
+              <span class="disponibilidade">
+                @if (item.produto.stock > 0) {
+                  Em stock
+                } @else {
+                  Sem stock
+                }
+              </span>
+            </div>
+
+            <div class="controlos-produto">
+              <span class="rotulo-controlos">Quantidade</span>
               <div class="qtd">
-                <button type="button" (click)="carrinho.alterarQuantidade(item.produto.id, item.quantidade - 1)">−</button>
-                <span>{{ item.quantidade }}</span>
                 <button
                   type="button"
+                  aria-label="Diminuir quantidade"
+                  [disabled]="item.quantidade <= 1"
+                  (click)="carrinho.alterarQuantidade(item.produto.id, item.quantidade - 1)"
+                >−</button>
+
+                <span>{{ item.quantidade }}</span>
+
+                <button
+                  type="button"
+                  aria-label="Aumentar quantidade"
                   [disabled]="item.quantidade >= item.produto.stock"
                   (click)="carrinho.alterarQuantidade(item.produto.id, item.quantidade + 1)"
                 >+</button>
               </div>
-            </td>
-            <td>{{ item.produto.price * item.quantidade | currency: 'EUR' }}</td>
-            <td><button type="button" class="remover" (click)="carrinho.remover(item.produto.id)">Remover</button></td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+              <button
+                type="button"
+                class="botao-remover"
+                (click)="carrinho.remover(item.produto.id)"
+              >
+                Remover
+              </button>
+            </div>
 
-  <div class="resumo">
-    <p class="total">Total: <strong>{{ carrinho.total() | currency: 'EUR' }}</strong></p>
-    <div class="acoes">
-      <button type="button" (click)="carrinho.limpar()">Esvaziar carrinho</button>
-      <button type="button" class="principal" (click)="finalizar()">Finalizar compra</button>
+            <div class="subtotal-produto">
+              <span class="rotulo-controlos">Subtotal</span>
+              <strong>{{ item.produto.price * item.quantidade | currency: 'EUR' }}</strong>
+            </div>
+          </article>
+        }
+
+        <a class="link-continuar" routerLink="/produtos">
+          <span aria-hidden="true">←</span> Continuar a comprar
+        </a>
+      </section>
+
+      <aside class="resumo-carrinho">
+        <h2>Resumo da compra</h2>
+
+        <div class="linha-resumo">
+          <span>Produtos</span>
+          <span>{{ carrinho.itens().length }}</span>
+        </div>
+
+        <div class="linha-resumo">
+          <span>Subtotal</span>
+          <span>{{ carrinho.total() | currency: 'EUR' }}</span>
+        </div>
+
+        <div class="linha-resumo">
+          <span>Envio</span>
+          <span class="envio-info">Não aplicável</span>
+        </div>
+
+        <div class="separador-resumo"></div>
+
+        <div class="linha-total">
+          <span>Total</span>
+          <strong>{{ carrinho.total() | currency: 'EUR' }}</strong>
+        </div>
+
+        <p class="nota-simulacao">
+          Esta loja utiliza uma finalização de compra simulada. Não será efetuado qualquer pagamento.
+        </p>
+
+        <button type="button" class="botao botao-principal botao-finalizar" (click)="finalizar()">
+          Finalizar compra <span aria-hidden="true">→</span>
+        </button>
+
+        <button type="button" class="botao-esvaziar" (click)="carrinho.limpar()">
+          Esvaziar carrinho
+        </button>
+      </aside>
     </div>
-    <a routerLink="/produtos">← Continuar a comprar</a>
-  </div>
-}
+  }
+</div>

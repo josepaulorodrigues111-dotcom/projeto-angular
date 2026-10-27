@@ -32,8 +32,13 @@ export class ProdutoDetalhe implements OnInit {
     }
 
     this.produtoService.obterPorId(id).subscribe({
-      next: (p) => {
-        this.produto.set(p);
+      next: (produto) => {
+        if (!produto) {
+          this.erro.set('O produto solicitado não foi encontrado.');
+        } else {
+          this.produto.set(produto);
+        }
+
         this.carregando.set(false);
       },
       error: (err) => {
@@ -44,19 +49,21 @@ export class ProdutoDetalhe implements OnInit {
   }
 
   adicionarAoCarrinho(): void {
-    const p = this.produto();
+    const produto = this.produto();
 
-    if (!p || p.stock <= 0) {
+    if (!produto || produto.stock <= 0) {
       return;
     }
 
-    const quantidadeAntes = this.carrinhoService.itens()
-      .find((item) => item.produto.id === p.id)?.quantidade ?? 0;
+    const quantidadeAntes =
+      this.carrinhoService.itens()
+        .find((item) => item.produto.id === produto.id)?.quantidade ?? 0;
 
-    this.carrinhoService.adicionar(p);
+    this.carrinhoService.adicionar(produto);
 
-    const quantidadeDepois = this.carrinhoService.itens()
-      .find((item) => item.produto.id === p.id)?.quantidade ?? 0;
+    const quantidadeDepois =
+      this.carrinhoService.itens()
+        .find((item) => item.produto.id === produto.id)?.quantidade ?? 0;
 
     if (quantidadeDepois > quantidadeAntes) {
       this.mensagemCarrinho.set('Produto adicionado ao carrinho.');
@@ -68,16 +75,24 @@ export class ProdutoDetalhe implements OnInit {
   }
 
   caminhoImagem(caminho: string): string {
-    if (!caminho) return '';
-
-    if (/^https?:\/\//i.test(caminho)) {
-      return caminho;
+    if (!caminho) {
+      return '';
     }
 
-    const relativo = caminho
-      .replace(/^\/+/, '')
-      .replace(/^projeto-angular\//, '');
+    const valor = caminho.trim();
 
+    // Mantém URLs completas, por exemplo imagens alojadas no Supabase.
+    if (/^https?:\/\//i.test(valor)) {
+      return valor;
+    }
+
+    // Remove barras iniciais e o prefixo do GitHub Pages, se existir.
+    const relativo = valor
+      .replace(/^\/+/, '')
+      .replace(/^projeto-angular\//i, '');
+
+    // Usa o endereço base da aplicação, incluindo o subdiretório
+    // /projeto-angular/ quando a aplicação está no GitHub Pages.
     return new URL(relativo, document.baseURI).toString();
   }
 }

@@ -8,7 +8,8 @@
         aria-label="LojaDos400 - Página inicial"
         (click)="irParaTopo()"
       >
-        LojaDos400<span class="ponto">.</span>
+        <span class="simbolo-loja">L</span>
+        <span>LojaDos400<span class="ponto">.</span></span>
       </a>
 
       <p class="descricao-loja">
@@ -44,18 +45,34 @@
     <div class="rodape-coluna">
       <h2>Navegação</h2>
 
-      <p>
-        <a routerLink="/" (click)="irParaTopo()">Início</a>
-      </p>
+      <a
+        class="link-navegacao"
+        routerLink="/"
+        (click)="irParaTopo()"
+      >
+        Início
+      </a>
 
-      <p>
-        <a routerLink="/produtos" (click)="irParaTopo()">Produtos</a>
-      </p>
+      <a
+        class="link-navegacao"
+        routerLink="/produtos"
+        (click)="irParaTopo()"
+      >
+        Produtos
+      </a>
+
+      <a
+        class="link-navegacao"
+        routerLink="/carrinho"
+        (click)="irParaTopo()"
+      >
+        Carrinho
+      </a>
     </div>
   </div>
 
   <div class="rodape-inferior">
-    <p>© {{ ano }} ShopManager. Todos os direitos reservados.</p>
+    <p>© {{ ano }} LojaDos400. Todos os direitos reservados.</p>
     <p class="texto-final">Feito para simplificar as tuas escolhas.</p>
   </div>
 </footer>

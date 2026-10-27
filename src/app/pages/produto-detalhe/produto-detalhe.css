@@ -2,136 +2,136 @@
 .pagina-detalhe {
   width: 100%;
   padding: 12px 0 40px;
-  color: #172033;
+  color: #171717;
 }
 
+/* Ligação para regressar à lista de produtos */
 .voltar {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 28px;
-  color: #64748b;
-  font-size: 0.95rem;
-  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .voltar span {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
 }
 
 .voltar:hover {
-  color: #2563eb;
+  color: #000;
 }
 
+/* Estrutura principal: imagem à esquerda e informação à direita */
 .detalhe {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 48px;
-  align-items: start;
-  padding: 32px;
-  background: #ffffff;
-  border: 1px solid #e8edf4;
-  border-radius: 20px;
-  box-shadow: 0 12px 36px rgb(15 23 42 / 5%);
+  gap: 64px;
+  align-items: center;
+  padding: 24px 0;
+  background: #fff;
 }
 
+/* Área da imagem */
 .imagem-container {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  padding: 28px;
+  min-width: 0;
+  min-height: 480px;
+  padding: 36px;
   overflow: hidden;
-  background: #f5f7fb;
-  border-radius: 16px;
+  background: #f5f5f3;
 }
 
 .imagem-container img {
   display: block;
   width: 100%;
-  max-width: 460px;
-  height: 360px;
+  max-width: 500px;
+  height: 420px;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 
 .imagem-container:hover img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .etiqueta-imagem {
   position: absolute;
-  top: 18px;
-  left: 18px;
-  padding: 7px 12px;
-  color: #334155;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  font-size: 0.75rem;
+  top: 20px;
+  left: 20px;
+  padding: 7px 11px;
+  color: #333;
+  background: rgb(255 255 255 / 85%);
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
+/* Informação do produto */
 .info {
   min-width: 0;
-  padding: 12px 4px;
+  padding: 20px 24px 20px 0;
 }
 
 .categoria {
-  margin: 0 0 12px;
-  color: #2563eb;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .info h1 {
-  margin: 0 0 18px;
-  color: #172033;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 750;
-  line-height: 1.2;
+  margin: 0 0 22px;
+  color: #171717;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
   overflow-wrap: anywhere;
 }
 
 .descricao {
   margin: 0;
-  color: #64748b;
-  font-size: 1rem;
-  line-height: 1.8;
+  color: #606060;
+  font-size: 0.98rem;
+  line-height: 1.85;
   overflow-wrap: anywhere;
 }
 
 .separador {
   height: 1px;
-  margin: 28px 0;
-  background: #e8edf4;
+  margin: 30px 0;
+  background: #e5e5e5;
 }
 
+/* Preço */
 .bloco-preco {
   margin-bottom: 24px;
 }
 
 .rotulo-preco {
-  color: #64748b;
+  color: #666;
   font-size: 0.85rem;
-  font-weight: 500;
 }
 
 .preco {
-  margin: 6px 0 0;
-  color: #172033;
+  margin: 8px 0 0;
+  color: #171717;
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: -0.04em;
 }
 
+/* Estado do stock */
 .stock {
   display: flex;
   align-items: flex-start;
@@ -139,59 +139,60 @@
   margin-bottom: 28px;
   padding: 15px 16px;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 2px;
 }
 
 .ponto-stock {
-  flex: 0 0 9px;
-  width: 9px;
-  height: 9px;
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
   margin-top: 5px;
   border-radius: 50%;
 }
 
 .stock strong {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .stock p {
-  margin: 4px 0 0;
-  font-size: 0.85rem;
+  margin: 5px 0 0;
+  font-size: 0.83rem;
   line-height: 1.5;
 }
 
 .disponivel {
-  color: #166534;
-  background: #f0fdf4;
-  border-color: #dcfce7;
+  color: #21643a;
+  background: #f3f8f3;
+  border-color: #e0ece1;
 }
 
 .disponivel .ponto-stock {
-  background: #22c55e;
+  background: #29964c;
 }
 
 .poucas {
-  color: #9a3412;
-  background: #fff7ed;
-  border-color: #fed7aa;
+  color: #8a4b16;
+  background: #fff8ef;
+  border-color: #f0e2cf;
 }
 
 .poucas .ponto-stock {
-  background: #f97316;
+  background: #d97706;
 }
 
 .esgotado {
-  color: #991b1b;
-  background: #fef2f2;
-  border-color: #fecaca;
+  color: #a12b2b;
+  background: #fff5f5;
+  border-color: #f0dddd;
 }
 
 .esgotado .ponto-stock {
-  background: #ef4444;
+  background: #dc2626;
 }
 
-/* Área dos botões da página de detalhes */
+/* Botões de ação */
 .acoes-produto {
   display: flex;
   flex-direction: column;
@@ -205,20 +206,21 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 48px;
-  padding: 13px 20px;
-  color: #ffffff;
-  background: #2563eb;
-  border: 1px solid #2563eb;
-  border-radius: 10px;
+  min-height: 50px;
+  padding: 14px 20px;
+  color: #fff;
+  background: #171717;
+  border: 1px solid #171717;
+  border-radius: 2px;
   font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 650;
+  font-size: 0.9rem;
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
+    color 0.2s ease,
     transform 0.2s ease,
     opacity 0.2s ease;
 }
@@ -234,27 +236,45 @@ button.botao {
 
 .botao:hover:not(:disabled),
 .botao-voltar:hover {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
-  transform: translateY(-1px);
+  background: #383838;
+  border-color: #383838;
+}
+
+.botao:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .botao:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
-.botao span {
-  font-size: 1.15rem;
+/* Segundo botão com estilo discreto */
+.botao-secundario {
+  color: #171717;
+  background: #fff;
+  border-color: #d4d4d4;
+}
+
+.botao-secundario:hover {
+  color: #fff;
+  background: #171717;
+  border-color: #171717;
+}
+
+.botao span,
+.botao-voltar span {
+  font-size: 1.1rem;
 }
 
 .mensagem-carrinho {
   margin: 0;
-  color: #166534;
-  font-size: 0.9rem;
+  color: #21643a;
+  font-size: 0.88rem;
   line-height: 1.5;
 }
 
+/* Estados de carregamento e erro */
 .estado {
   display: flex;
   flex-direction: column;
@@ -262,23 +282,24 @@ button.botao {
   justify-content: center;
   min-height: 280px;
   padding: 32px 20px;
-  color: #64748b;
+  color: #666;
   text-align: center;
 }
 
 .estado h2 {
   margin: 16px 0 8px;
-  color: #172033;
+  color: #171717;
+  font-weight: 500;
 }
 
 .estado p {
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .estado-erro {
-  background: #ffffff;
-  border: 1px solid #e8edf4;
-  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
 }
 
 .icone-estado {
@@ -287,8 +308,8 @@ button.botao {
   justify-content: center;
   width: 48px;
   height: 48px;
-  color: #b91c1c;
-  background: #fef2f2;
+  color: #a12b2b;
+  background: #fff0f0;
   border-radius: 50%;
   font-size: 1.5rem;
   font-weight: 700;
@@ -297,8 +318,8 @@ button.botao {
 .loader {
   width: 34px;
   height: 34px;
-  border: 3px solid #dbeafe;
-  border-top-color: #2563eb;
+  border: 3px solid #e5e5e5;
+  border-top-color: #171717;
   border-radius: 50%;
   animation: rodar 0.8s linear infinite;
 }
@@ -309,27 +330,29 @@ button.botao {
   }
 }
 
-@media (max-width: 800px) {
+/* Tablets */
+@media (max-width: 900px) {
   .detalhe {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 20px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
   }
 
   .imagem-container {
-    min-height: 300px;
+    min-height: 360px;
+    padding: 24px;
   }
 
   .imagem-container img {
-    height: 280px;
+    height: 320px;
   }
 
   .info {
-    padding: 4px 0;
+    padding-right: 8px;
   }
 }
 
-@media (max-width: 480px) {
+/* Telemóveis */
+@media (max-width: 650px) {
   .pagina-detalhe {
     padding-top: 4px;
   }
@@ -339,22 +362,30 @@ button.botao {
   }
 
   .detalhe {
-    gap: 20px;
-    padding: 14px;
-    border-radius: 14px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0;
   }
 
   .imagem-container {
-    min-height: 230px;
-    padding: 16px;
+    min-height: 280px;
+    padding: 20px;
   }
 
   .imagem-container img {
-    height: 220px;
+    height: 260px;
+  }
+
+  .info {
+    padding: 0 4px;
   }
 
   .info h1 {
-    font-size: 1.7rem;
+    font-size: 2rem;
+  }
+
+  .separador {
+    margin: 24px 0;
   }
 
   .preco {
@@ -365,5 +396,15 @@ button.botao {
   .botao-voltar {
     width: 100%;
     box-sizing: border-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

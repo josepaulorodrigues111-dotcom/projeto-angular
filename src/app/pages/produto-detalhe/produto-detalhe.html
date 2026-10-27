@@ -1,3 +1,4 @@
+
 <div class="pagina-detalhe">
   <a routerLink="/produtos" class="voltar">
     <span aria-hidden="true">←</span>
@@ -5,92 +6,109 @@
   </a>
 
   @if (carregando()) {
-  <div class="estado">
-    <div class="loader"></div>
-    <p>A carregar produto...</p>
-  </div>
+    <div class="estado" role="status" aria-live="polite">
+      <div class="loader"></div>
+      <p>A carregar produto...</p>
+    </div>
   } @else if (erro()) {
-  <section class="estado estado-erro">
-    <span class="icone-estado">!</span>
-    <h2>Não foi possível carregar o produto</h2>
-    <p>{{ erro() }}</p>
-    <a routerLink="/produtos" class="botao-voltar">
-      Voltar à lista de produtos
-    </a>
-  </section>
-  } @else if (produto(); as p) {
-  <article class="detalhe">
-    <div class="imagem-container">
-      <span class="etiqueta-imagem">Produto</span>
+    <section class="estado estado-erro" role="alert">
+      <span class="icone-estado" aria-hidden="true">!</span>
 
-      <img [src]="caminhoImagem(p.thumbnail)" [alt]="p.title" />
-    </div>
+      <h2>Não foi possível carregar o produto</h2>
+      <p>{{ erro() }}</p>
 
-    <div class="info">
-      <p class="categoria">
-        {{ p.category | titlecase }}
-      </p>
-
-      <h1>{{ p.title }}</h1>
-
-      <p class="descricao">
-        {{ p.description }}
-      </p>
-
-      <div class="separador"></div>
-
-      <div class="bloco-preco">
-        <span class="rotulo-preco">Preço</span>
-        <p class="preco">{{ p.price | currency: 'EUR' }}</p>
-      </div>
-
-      @switch (true) {
-      @case (p.stock === 0) {
-      <div class="stock esgotado">
-        <span class="ponto-stock"></span>
-        <div>
-          <strong>Esgotado</strong>
-          <p>Este produto não está disponível neste momento.</p>
-        </div>
-      </div>
-      }
-      @case (p.stock <= 5) { <div class="stock poucas">
-        <span class="ponto-stock"></span>
-        <div>
-          <strong>Stock reduzido</strong>
-          <p>Apenas {{ p.stock }} unidades disponíveis.</p>
-        </div>
-    </div>
-    }
-    @default {
-    <div class="stock disponivel">
-      <span class="ponto-stock"></span>
-      <div>
-        <strong>Disponível</strong>
-        <p>{{ p.stock }} unidades em stock.</p>
-      </div>
-    </div>
-    }
-    }
-
-    <div class="acoes-produto">
-      <button type="button" class="botao" [disabled]="p.stock <= 0" (click)="adicionarAoCarrinho()">
-        {{ p.stock <= 0 ? 'Produto esgotado' : 'Adicionar ao carrinho' }} @if (p.stock> 0) {
-          <span aria-hidden="true">🛒</span>
-          }
-      </button>
-
-      <p class="mensagem-carrinho" role="status" aria-live="polite" [hidden]="!mensagemCarrinho()">
-        {{ mensagemCarrinho() }}
-      </p>
-
-      <a routerLink="/produtos" class="botao">
-        Explorar outros produtos
-        <span aria-hidden="true">→</span>
+      <a routerLink="/produtos" class="botao-voltar">
+        Voltar à lista de produtos
       </a>
-    </div>
+    </section>
+  } @else if (produto(); as p) {
+    <article class="detalhe">
+      <div class="imagem-container">
+        <span class="etiqueta-imagem">Produto</span>
 
-</div>
-</article>
-}
+        <img
+          [src]="caminhoImagem(p.thumbnail)"
+          [alt]="p.title"
+          fetchpriority="high"
+        />
+      </div>
+
+      <div class="info">
+        <p class="categoria">
+          {{ p.category | titlecase }}
+        </p>
+
+        <h1>{{ p.title }}</h1>
+
+        <p class="descricao">
+          {{ p.description }}
+        </p>
+
+        <div class="separador"></div>
+
+        <div class="bloco-preco">
+          <span class="rotulo-preco">Preço</span>
+          <p class="preco">{{ p.price | currency: 'EUR' }}</p>
+        </div>
+
+        @if (p.stock <= 0) {
+          <div class="stock esgotado">
+            <span class="ponto-stock" aria-hidden="true"></span>
+
+            <div>
+              <strong>Esgotado</strong>
+              <p>Este produto não está disponível neste momento.</p>
+            </div>
+          </div>
+        } @else if (p.stock <= 5) {
+          <div class="stock poucas">
+            <span class="ponto-stock" aria-hidden="true"></span>
+
+            <div>
+              <strong>Stock reduzido</strong>
+              <p>Apenas {{ p.stock }} unidades disponíveis.</p>
+            </div>
+          </div>
+        } @else {
+          <div class="stock disponivel">
+            <span class="ponto-stock" aria-hidden="true"></span>
+
+            <div>
+              <strong>Disponível</strong>
+              <p>{{ p.stock }} unidades em stock.</p>
+            </div>
+          </div>
+        }
+
+        <div class="acoes-produto">
+          <button
+            type="button"
+            class="botao"
+            [disabled]="p.stock <= 0"
+            (click)="adicionarAoCarrinho()"
+          >
+            {{ p.stock <= 0 ? 'Produto esgotado' : 'Adicionar ao carrinho' }}
+
+            @if (p.stock > 0) {
+              <span aria-hidden="true">🛒</span>
+            }
+          </button>
+
+          <p
+            class="mensagem-carrinho"
+            role="status"
+            aria-live="polite"
+            [hidden]="!mensagemCarrinho()"
+          >
+            {{ mensagemCarrinho() }}
+          </p>
+
+          <a routerLink="/produtos" class="botao botao-secundario">
+            Explorar outros produtos
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </article>
+  }
 </div>
