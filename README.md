@@ -20,7 +20,7 @@ O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript p
 
 A aplicação está disponível através do GitHub Pages:
 
-**[Aceder ao ShopManager](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)**
+[**Aceder ao ShopManager**](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)
 
 Repositório do projeto: [GitHub — projeto-angular](https://github.com/josepaulorodrigues111-dotcom/projeto-angular)
 
@@ -59,19 +59,12 @@ Não devem ser utilizadas chaves secretas ou `service_role` no código do fronte
 npm start
 ```
 
-Se o projeto não tiver o comando `start` configurado no `package.json`, utilizar:
-
-```bash
-npx ng serve
-```
-
 A aplicação ficará normalmente disponível em:
 
-http://localhost:4200/
+[http://localhost:4200/](http://localhost:4200/)
 
 ## 5. API e fonte de dados
 
 A aplicação utiliza o **Supabase** como fonte de dados para armazenar e consultar os produtos. O Supabase Auth é utilizado para a autenticação, enquanto as permissões de administração são verificadas através da configuração de segurança da base de dados.
 
 A comunicação com os dados é realizada através de pedidos HTTP, utilizando o `HttpClient` do Angular.
-
