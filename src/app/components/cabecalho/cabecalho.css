@@ -88,6 +88,30 @@ nav a.admin:hover {
   font-size: 0.875rem;
 }
 
+
+.carrinho {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: #111;
+}
+.contador {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #c62828;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 700px) {
   .cabecalho {
     flex-direction: column;

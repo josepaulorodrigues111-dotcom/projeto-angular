@@ -1,5 +1,6 @@
+
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthService } from '../../services/auth.service';
@@ -9,37 +10,81 @@ describe('Login', () => {
   beforeEach(() => TestBed.resetTestingModule());
 
   function createLogin(isAdmin: boolean) {
-    const entrar = vi.fn().mockResolvedValue(true);
-    const navigate = vi.fn().mockResolvedValue(true);
+    const entrar = vi.fn().mockResolvedValue(undefined);
+    const navigateByUrl = vi.fn().mockResolvedValue(true);
+
     TestBed.configureTestingModule({
       imports: [Login],
       providers: [
-        { provide: AuthService, useValue: { entrar, administrador: signal(isAdmin), erroAutorizacao: signal(false), mensagemErro: (e: Error) => e.message } },
-        { provide: Router, useValue: { navigate } },
+        {
+          provide: AuthService,
+          useValue: {
+            entrar,
+            autenticado: signal(true),
+            eAdmin: signal(isAdmin),
+            mensagemErro: (e: Error) => e.message,
+          },
+        },
+        {
+          provide: Router,
+          useValue: { navigateByUrl },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              queryParamMap: {
+                get: vi.fn().mockReturnValue(null),
+              },
+            },
+          },
+        },
       ],
     });
-    return { component: TestBed.createComponent(Login).componentInstance, entrar, navigate };
+
+    return {
+      component: TestBed.createComponent(Login).componentInstance,
+      entrar,
+      navigateByUrl,
+    };
   }
 
   it('não tenta autenticar um formulário inválido', async () => {
     const { component, entrar } = createLogin(true);
+
     await component.submeter();
+
     expect(component.form.invalid).toBe(true);
     expect(entrar).not.toHaveBeenCalled();
   });
 
   it('encaminha um administrador para a administração após login válido', async () => {
-    const { component, entrar, navigate } = createLogin(true);
-    component.form.setValue({ email: 'admin@example.test', password: 'secret1' });
+    const { component, entrar, navigateByUrl } = createLogin(true);
+
+    component.form.setValue({
+      email: 'admin@example.test',
+      password: 'secret1',
+    });
+
     await component.submeter();
-    expect(entrar).toHaveBeenCalledWith('admin@example.test', 'secret1');
-    expect(navigate).toHaveBeenCalledWith(['/admin']);
+
+    expect(entrar).toHaveBeenCalledWith(
+      'admin@example.test',
+      'secret1',
+    );
+    expect(navigateByUrl).toHaveBeenCalledWith('/admin');
   });
 
-  it('não encaminha uma conta normal para a administração', async () => {
-    const { component, navigate } = createLogin(false);
-    component.form.setValue({ email: 'user@example.test', password: 'secret1' });
+  it('encaminha uma conta normal para a página inicial', async () => {
+    const { component, navigateByUrl } = createLogin(false);
+
+    component.form.setValue({
+      email: 'user@example.test',
+      password: 'secret1',
+    });
+
     await component.submeter();
-    expect(navigate).toHaveBeenCalledWith(['/sem-permissao']);
+
+    expect(navigateByUrl).toHaveBeenCalledWith('/');
   });
 });

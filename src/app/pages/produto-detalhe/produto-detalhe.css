@@ -191,6 +191,14 @@
   background: #ef4444;
 }
 
+/* Área dos botões da página de detalhes */
+.acoes-produto {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
 .botao,
 .botao-voltar {
   display: inline-flex;
@@ -203,6 +211,7 @@
   background: #2563eb;
   border: 1px solid #2563eb;
   border-radius: 10px;
+  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 650;
   text-align: center;
@@ -210,18 +219,40 @@
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.botao:hover,
+.acoes-produto .botao {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button.botao {
+  cursor: pointer;
+}
+
+.botao:hover:not(:disabled),
 .botao-voltar:hover {
   background: #1d4ed8;
   border-color: #1d4ed8;
   transform: translateY(-1px);
 }
 
+.botao:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .botao span {
   font-size: 1.15rem;
+}
+
+.mensagem-carrinho {
+  margin: 0;
+  color: #166534;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .estado {

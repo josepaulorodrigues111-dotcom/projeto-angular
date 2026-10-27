@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class Login {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   erro = signal('');
   aProcessar = signal(false);
@@ -38,19 +39,19 @@ export class Login {
     this.erro.set('');
 
     try {
-      const iniciouSessao = await this.auth.entrar(email, password);
-      if (!iniciouSessao) {
-        this.erro.set('A conta existe, mas o email ainda não foi confirmado. Verifica a tua caixa de correio.');
+      await this.auth.entrar(email, password);
+
+      if (!this.auth.autenticado()) {
+        this.erro.set('Não foi possível iniciar sessão. Confirma o email da conta.');
         return;
       }
-      if (this.auth.erroAutorizacao()) {
-        this.erro.set('A sessão foi iniciada, mas não foi possível confirmar as permissões. Tenta novamente mais tarde.');
-        return;
-      }
-      if (this.auth.administrador()) {
-        await this.router.navigate(['/admin']);
+
+      // Volta ao sítio onde o utilizador estava (só caminhos internos)
+      const destino = this.route.snapshot.queryParamMap.get('returnUrl');
+      if (destino && destino.startsWith('/') && !destino.startsWith('//')) {
+        await this.router.navigateByUrl(destino);
       } else {
-        await this.router.navigate(['/sem-permissao']);
+        await this.router.navigateByUrl(this.auth.eAdmin() ? '/admin' : '/');
       }
     } catch (error) {
       this.erro.set(this.auth.mensagemErro(error));

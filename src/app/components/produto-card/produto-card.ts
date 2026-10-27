@@ -12,6 +12,7 @@ import { Produto } from '../../models/produto';
 })
 export class ProdutoCard {
   @Input({ required: true }) produto!: Produto;
+
   @Output() verDetalhe = new EventEmitter<Produto>();
 
   get disponibilidade(): 'esgotado' | 'poucas' | 'disponivel' {
@@ -23,12 +24,12 @@ export class ProdutoCard {
   caminhoImagem(caminho: string): string {
     if (!caminho) return '';
 
-    if (caminho.startsWith('http')) {
+    if (/^https?:\/\//i.test(caminho)) {
       return caminho;
     }
 
     return new URL(
-      caminho.replace(/^\//, ''),
+      caminho.replace(/^\/+/, ''),
       document.baseURI
     ).href;
   }

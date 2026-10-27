@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { ProdutoService } from '../../services/produto.service';
+import { CarrinhoService } from '../../services/carrinho.service';
 import { Produto } from '../../models/produto';
 
 @Component({
@@ -14,13 +15,14 @@ import { Produto } from '../../models/produto';
 export class ProdutoDetalhe implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly produtoService = inject(ProdutoService);
+  private readonly carrinhoService = inject(CarrinhoService);
 
   produto = signal<Produto | null>(null);
   carregando = signal(true);
   erro = signal('');
+  mensagemCarrinho = signal('');
 
   ngOnInit(): void {
-    // Lê o ID do produto a partir do endereço
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -41,7 +43,30 @@ export class ProdutoDetalhe implements OnInit {
     });
   }
 
-  // Funciona com caminhos locais e URLs de imagens externas
+  adicionarAoCarrinho(): void {
+    const p = this.produto();
+
+    if (!p || p.stock <= 0) {
+      return;
+    }
+
+    const quantidadeAntes = this.carrinhoService.itens()
+      .find((item) => item.produto.id === p.id)?.quantidade ?? 0;
+
+    this.carrinhoService.adicionar(p);
+
+    const quantidadeDepois = this.carrinhoService.itens()
+      .find((item) => item.produto.id === p.id)?.quantidade ?? 0;
+
+    if (quantidadeDepois > quantidadeAntes) {
+      this.mensagemCarrinho.set('Produto adicionado ao carrinho.');
+    } else {
+      this.mensagemCarrinho.set(
+        'Não foi possível adicionar mais unidades. Verifica o stock disponível.',
+      );
+    }
+  }
+
   caminhoImagem(caminho: string): string {
     if (!caminho) return '';
 

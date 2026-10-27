@@ -2,13 +2,28 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = async () => {
+// Qualquer utilizador autenticado (carrinho)
+export const authGuard: CanActivateFn = async (_rota, estado) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  await auth.pronta;
-  if (!auth.autenticado()) return router.createUrlTree(['/login']);
-  return (await auth.verificarAcessoAdministrador())
+  await auth.aguardarSessao();
+
+  return auth.autenticado()
     ? true
-    : router.createUrlTree(['/sem-permissao']);
+    : router.createUrlTree(['/login'], { queryParams: { returnUrl: estado.url } });
+};
+
+// Só o administrador (/admin)
+export const adminGuard: CanActivateFn = async (_rota, estado) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  await auth.aguardarSessao();
+
+  if (!auth.autenticado()) {
+    return router.createUrlTree(['/login'], { queryParams: { returnUrl: estado.url } });
+  }
+
+  return auth.eAdmin() ? true : router.createUrlTree(['/']);
 };

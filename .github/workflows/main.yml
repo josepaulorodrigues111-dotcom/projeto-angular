@@ -1,3 +1,4 @@
+
 name: Deploy Angular to GitHub Pages
 
 on:
@@ -37,45 +38,66 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
         run: |
           node <<'NODE'
           const fs = require('node:fs');
 
           const url = process.env.SUPABASE_URL;
           const key = process.env.SUPABASE_KEY;
+          const adminEmail = process.env.ADMIN_EMAIL;
 
-          if (!url || !key) {
+          if (!url || !key || !adminEmail) {
             throw new Error(
-              'Faltam os GitHub Secrets SUPABASE_URL ou SUPABASE_KEY.'
+              'Faltam os GitHub Secrets SUPABASE_URL, SUPABASE_KEY ou ADMIN_EMAIL.'
             );
           }
 
           if (key.startsWith('sb_secret_')) {
-            throw new Error('SUPABASE_KEY tem de ser uma chave pública anon/publishable.');
+            throw new Error(
+              'SUPABASE_KEY tem de ser uma chave pública anon/publishable.'
+            );
           }
 
           let parsedUrl;
+
           try {
             parsedUrl = new URL(url);
           } catch {
             throw new Error('SUPABASE_URL não contém um URL válido.');
           }
+
           if (!['https:', 'http:'].includes(parsedUrl.protocol)) {
             throw new Error('SUPABASE_URL não contém um URL HTTP válido.');
           }
 
-          const jwtPayload = key.split('.')[1];
-          if (jwtPayload) {
-            const payload = JSON.parse(Buffer.from(jwtPayload, 'base64url').toString('utf8'));
-            if (payload.role && payload.role !== 'anon') {
-              throw new Error('SUPABASE_KEY tem de ser uma chave pública anon/publishable.');
+          try {
+            const jwtPayload = key.split('.')[1];
+
+            if (jwtPayload) {
+              const payload = JSON.parse(
+                Buffer.from(jwtPayload, 'base64url').toString('utf8')
+              );
+
+              if (payload.role && payload.role !== 'anon') {
+                throw new Error(
+                  'SUPABASE_KEY tem de ser uma chave pública anon/publishable.'
+                );
+              }
             }
+          } catch (error) {
+            if (error.message.includes('SUPABASE_KEY')) {
+              throw error;
+            }
+
+            throw new Error('Não foi possível validar o formato de SUPABASE_KEY.');
           }
 
           const environment = {
             production: true,
             supabaseUrl: url,
-            supabaseKey: key
+            supabaseKey: key,
+            adminEmail
           };
 
           const content =
@@ -85,7 +107,8 @@ jobs:
 
           fs.writeFileSync(
             'src/environments/environment.ts',
-            content
+            content,
+            'utf8'
           );
 
           console.log('Ficheiro de ambiente de produção configurado.');

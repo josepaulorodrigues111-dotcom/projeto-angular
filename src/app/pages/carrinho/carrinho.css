@@ -1,0 +1,13 @@
+.tabela-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
+td img { width: 64px; height: 48px; object-fit: contain; background: #f3f4f6; border-radius: 6px; }
+.qtd { display: flex; align-items: center; gap: 8px; }
+.qtd button { width: 28px; height: 28px; cursor: pointer; }
+.resumo { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+.total { font-size: 1.3rem; margin: 0; }
+.acoes { display: flex; gap: 12px; }
+.acoes button, .remover { padding: 8px 16px; cursor: pointer; }
+.principal { background: #111; color: #fff; border: none; border-radius: 6px; }
+.mensagem { padding: 32px 0; display: flex; flex-direction: column; gap: 8px; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }

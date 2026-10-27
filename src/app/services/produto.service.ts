@@ -11,6 +11,14 @@ export class ProdutoService {
   private readonly auth = inject(AuthService);
   private readonly url = `${environment.supabaseUrl}/rest/v1/produtos`;
 
+  // Falso se o URL/chave ainda forem os marcadores do environment.ts
+  private get configurado(): boolean {
+    return (
+      environment.supabaseUrl.startsWith('http') &&
+      environment.supabaseKey !== 'SUPABASE_KEY'
+    );
+  }
+
   // Sem sessão usa a chave pública (leitura); com sessão usa o token do utilizador (escrita)
   private get headers(): HttpHeaders {
     return new HttpHeaders({
@@ -20,7 +28,7 @@ export class ProdutoService {
   }
 
   listar(): Observable<Produto[]> {
-    if (!this.auth.configurado) return this.configuracaoEmFalta();
+    if (!this.configurado) return this.configuracaoEmFalta();
     return this.http.get<Produto[]>(this.url, {
       headers: this.headers,
       params: { select: '*', order: 'id' },
@@ -28,7 +36,7 @@ export class ProdutoService {
   }
 
   obterPorId(id: number): Observable<Produto> {
-    if (!this.auth.configurado) return this.configuracaoEmFalta();
+    if (!this.configurado) return this.configuracaoEmFalta();
     return this.http.get<Produto>(this.url, {
       headers: this.headers.set('Accept', 'application/vnd.pgrst.object+json'),
       params: { select: '*', id: `eq.${id}` },
@@ -36,7 +44,7 @@ export class ProdutoService {
   }
 
   criar(produto: Omit<Produto, 'id'>): Observable<Produto> {
-    if (!this.auth.configurado) return this.configuracaoEmFalta();
+    if (!this.configurado) return this.configuracaoEmFalta();
     return this.http
       .post<Produto[]>(this.url, produto, {
         headers: this.headers.set('Prefer', 'return=representation'),
@@ -45,7 +53,7 @@ export class ProdutoService {
   }
 
   editar(id: number, produto: Partial<Produto>): Observable<Produto> {
-    if (!this.auth.configurado) return this.configuracaoEmFalta();
+    if (!this.configurado) return this.configuracaoEmFalta();
     return this.http
       .patch<Produto[]>(this.url, produto, {
         headers: this.headers.set('Prefer', 'return=representation'),
@@ -55,7 +63,7 @@ export class ProdutoService {
   }
 
   apagar(id: number): Observable<void> {
-    if (!this.auth.configurado) return this.configuracaoEmFalta();
+    if (!this.configurado) return this.configuracaoEmFalta();
     return this.http.delete<void>(this.url, {
       headers: this.headers,
       params: { id: `eq.${id}` },
@@ -77,6 +85,8 @@ export class ProdutoService {
   }
 
   private configuracaoEmFalta<T>(): Observable<T> {
-    return throwError(() => new Error('Configuração local do Supabase em falta. Segue os passos do README.'));
+    return throwError(
+      () => new Error('Configuração local do Supabase em falta. Segue os passos do README.')
+    );
   }
 }

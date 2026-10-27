@@ -1,0 +1,59 @@
+<h1>Carrinho</h1>
+
+@if (compraConcluida()) {
+  <div class="mensagem">
+    <p>Compra simulada concluída. Obrigado!</p>
+    <a routerLink="/produtos">Continuar a comprar</a>
+  </div>
+} @else if (carrinho.itens().length === 0) {
+  <div class="mensagem">
+    <p>O carrinho está vazio.</p>
+    <a routerLink="/produtos">← Ver produtos</a>
+  </div>
+} @else {
+  <div class="tabela-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Produto</th>
+          <th>Preço</th>
+          <th>Quantidade</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of carrinho.itens(); track item.produto.id) {
+          <tr>
+            <td><img [src]="item.produto.thumbnail" [alt]="item.produto.title" /></td>
+            <td>{{ item.produto.title }}</td>
+            <td>{{ item.produto.price | currency: 'EUR' }}</td>
+            <td>
+              <div class="qtd">
+                <button type="button" (click)="carrinho.alterarQuantidade(item.produto.id, item.quantidade - 1)">−</button>
+                <span>{{ item.quantidade }}</span>
+                <button
+                  type="button"
+                  [disabled]="item.quantidade >= item.produto.stock"
+                  (click)="carrinho.alterarQuantidade(item.produto.id, item.quantidade + 1)"
+                >+</button>
+              </div>
+            </td>
+            <td>{{ item.produto.price * item.quantidade | currency: 'EUR' }}</td>
+            <td><button type="button" class="remover" (click)="carrinho.remover(item.produto.id)">Remover</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="resumo">
+    <p class="total">Total: <strong>{{ carrinho.total() | currency: 'EUR' }}</strong></p>
+    <div class="acoes">
+      <button type="button" (click)="carrinho.limpar()">Esvaziar carrinho</button>
+      <button type="button" class="principal" (click)="finalizar()">Finalizar compra</button>
+    </div>
+    <a routerLink="/produtos">← Continuar a comprar</a>
+  </div>
+}

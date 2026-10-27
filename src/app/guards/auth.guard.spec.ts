@@ -1,47 +1,95 @@
+
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
-import { ActivatedRouteSnapshot, provideRouter, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  ActivatedRouteSnapshot,
+  provideRouter,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthService } from '../services/auth.service';
-import { authGuard } from './auth.guard';
+import { authGuard, adminGuard } from './auth.guard';
 
 describe('authGuard', () => {
   beforeEach(() => TestBed.resetTestingModule());
 
-  async function navigateWith(auth: Partial<AuthService>) {
+  async function executarGuard(
+    guard: typeof authGuard | typeof adminGuard,
+    auth: Partial<AuthService>,
+  ) {
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), { provide: AuthService, useValue: auth }],
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useValue: auth },
+      ],
     });
+
     const router = TestBed.inject(Router);
+
     const result = await TestBed.runInInjectionContext(() =>
-      authGuard({} as ActivatedRouteSnapshot, { url: '/admin' } as RouterStateSnapshot),
+      guard(
+        {} as ActivatedRouteSnapshot,
+        { url: '/admin' } as RouterStateSnapshot,
+      ),
     );
+
     return { result, router };
   }
 
-  it('envia visitantes para o login depois de aguardar a sessão', async () => {
-    const pronta = Promise.resolve();
-    const { result, router } = await navigateWith({ pronta, autenticado: signal(false) });
-    expect(router.serializeUrl(result as UrlTree)).toBe('/login');
+  it('envia visitantes para o login ao tentar aceder a uma rota protegida', async () => {
+    const aguardarSessao = vi.fn().mockResolvedValue(undefined);
+
+    const { result, router } = await executarGuard(authGuard, {
+      aguardarSessao,
+      autenticado: signal(false) as AuthService['autenticado'],
+    });
+
+    expect(aguardarSessao).toHaveBeenCalledOnce();
+    expect(router.serializeUrl(result as UrlTree)).toBe(
+      '/login?returnUrl=%2Fadmin',
+    );
   });
 
-  it('nega a rota a utilizadores autenticados que não são administradores', async () => {
-    const verificarAcessoAdministrador = vi.fn().mockResolvedValue(false);
-    const { result, router } = await navigateWith({
-      pronta: Promise.resolve(),
+  it('permite o acesso ao carrinho a utilizadores autenticados', async () => {
+    const { result } = await executarGuard(authGuard, {
+      aguardarSessao: async () => undefined,
       autenticado: signal(true) as AuthService['autenticado'],
-      verificarAcessoAdministrador,
     });
-    expect(verificarAcessoAdministrador).toHaveBeenCalledOnce();
-    expect(router.serializeUrl(result as UrlTree)).toBe('/sem-permissao');
+
+    expect(result).toBe(true);
   });
 
-  it('permite a rota apenas após confirmar o administrador', async () => {
-    const { result } = await navigateWith({
-      pronta: Promise.resolve(),
-      autenticado: signal(true) as AuthService['autenticado'],
-      verificarAcessoAdministrador: vi.fn().mockResolvedValue(true),
+  it('envia visitantes que tentam aceder à administração para o login', async () => {
+    const { result, router } = await executarGuard(adminGuard, {
+      aguardarSessao: async () => undefined,
+      autenticado: signal(false) as AuthService['autenticado'],
+      eAdmin: signal(false) as AuthService['eAdmin'],
     });
+
+    expect(router.serializeUrl(result as UrlTree)).toBe(
+      '/login?returnUrl=%2Fadmin',
+    );
+  });
+
+  it('impede um utilizador autenticado que não é administrador de aceder à administração', async () => {
+    const { result, router } = await executarGuard(adminGuard, {
+      aguardarSessao: async () => undefined,
+      autenticado: signal(true) as AuthService['autenticado'],
+      eAdmin: signal(false) as AuthService['eAdmin'],
+    });
+
+    expect(router.serializeUrl(result as UrlTree)).toBe('/');
+  });
+
+  it('permite o acesso à administração ao administrador', async () => {
+    const { result } = await executarGuard(adminGuard, {
+      aguardarSessao: async () => undefined,
+      autenticado: signal(true) as AuthService['autenticado'],
+      eAdmin: signal(true) as AuthService['eAdmin'],
+    });
+
     expect(result).toBe(true);
   });
 });
