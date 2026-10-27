@@ -1,4 +1,3 @@
-
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
