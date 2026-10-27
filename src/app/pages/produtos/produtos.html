@@ -36,10 +36,10 @@
 
           <input
             id="pesquisa-produtos"
+            name="pesquisaProdutos"
             type="search"
             placeholder="Pesquisar por nome..."
-            [ngModel]="pesquisa()"
-            (ngModelChange)="pesquisa.set($event)"
+            [(ngModel)]="textoPesquisa"
           />
         </div>
       </div>

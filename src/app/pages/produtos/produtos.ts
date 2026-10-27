@@ -1,3 +1,4 @@
+
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,6 +22,15 @@ export class Produtos implements OnInit {
 
   pesquisa = signal('');
   categoria = signal('');
+
+  // Permite usar [(ngModel)] com o signal pesquisa.
+  get textoPesquisa(): string {
+    return this.pesquisa();
+  }
+
+  set textoPesquisa(valor: string) {
+    this.pesquisa.set(valor);
+  }
 
   categorias = computed(() =>
     [...new Set(this.produtos().map((p) => p.category))].sort()
