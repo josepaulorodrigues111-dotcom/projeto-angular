@@ -1,80 +1,77 @@
-# ShopManager
+# ShopManager — Gestão de Produtos
 
-Aplicação Angular de catálogo e gestão de produtos. Os visitantes podem consultar o catálogo; a administração requer uma sessão Supabase e autorização explícita registada na base de dados.
+## 1. Descrição do projeto
 
-## Tecnologias
+O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript para a consulta e gestão de produtos. O projeto foi desenvolvido no âmbito do módulo de Fundamentos de Angular, com o objetivo de aplicar os conceitos da framework através de uma aplicação SPA (Single Page Application).
 
-- Angular 22, TypeScript e componentes standalone
-- Angular Router, formulários reativos, signals e pipes nativos
-- Supabase Auth e tabela `public.produtos`
-- `HttpClient` num serviço para os pedidos REST do Supabase; `@supabase/supabase-js` para autenticação e verificação da permissão administrativa
-- GitHub Actions e GitHub Pages
+## 2. Principais funcionalidades
 
-## Funcionalidades
+- Consulta da lista de produtos.
+- Pesquisa de produtos por nome.
+- Filtragem de produtos por categoria.
+- Visualização dos detalhes de cada produto.
+- Dashboard com indicadores sobre os produtos e o stock.
+- Autenticação de utilizadores através do Supabase Auth.
+- Criação, edição e eliminação de produtos por administradores autorizados.
+- Formulários com validação dos dados.
+- Controlo de permissões através das políticas de segurança da base de dados.
 
-- Página inicial com produtos em destaque
-- Catálogo público com pesquisa e filtro por categoria
-- Cartões reutilizáveis, detalhes, preço e estado de stock
-- Dashboard com estatísticas, criação, edição e eliminação de produtos
-- Login reservado a contas previamente criadas e autorizadas
-- Sem registo público na aplicação
+## 3. Aplicação publicada
 
-O endereço público do GitHub Pages não está confirmado neste repositório. Depois de uma publicação bem-sucedida, acrescenta aqui o URL apresentado pelo ambiente `github-pages` no GitHub.
+A aplicação está disponível através do GitHub Pages:
 
-## Executar localmente
+**[Aceder ao ShopManager](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)**
 
-Requer Node.js compatível com Angular 22 e npm.
+Repositório do projeto: [GitHub — projeto-angular](https://github.com/josepaulorodrigues111-dotcom/projeto-angular)
+
+## 4. Instalação e execução local
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/)
+- npm, incluído com o Node.js
+- Acesso ao projeto Supabase utilizado pela aplicação
+
+### Passos de instalação
+
+**1. Clonar o repositório**
+
+```bash
+git clone https://github.com/josepaulorodrigues111-dotcom/projeto-angular.git
+cd projeto-angular
+```
+
+**2. Instalar as dependências**
 
 ```bash
 npm ci
 ```
 
-Executa `npm start` (ou `ng serve`). A configuração local continua no ficheiro ignorado pelo Git `src/environments/environment.development.ts`; o Angular seleciona-o automaticamente na configuração `development`. Mantém nesse ficheiro a URL do projeto e uma chave pública anon/publishable. Não é necessário criar `.env.local` nem gerar outros ficheiros. Nunca uses uma chave `service_role` ou `sb_secret_` no frontend. A proteção dos dados depende das políticas RLS no Supabase.
+**3. Configurar o ambiente**
 
-Comandos adicionais:
+Configurar os ficheiros de ambiente locais com o URL do projeto Supabase e a respetiva chave pública (`anon` ou `publishable`), de acordo com a configuração da aplicação.
+
+Não devem ser utilizadas chaves secretas ou `service_role` no código do frontend, nem enviados para o GitHub ficheiros com credenciais privadas.
+
+**4. Iniciar a aplicação**
 
 ```bash
-npm run build
-npm test -- --watch=false --isolate=false
+npm start
 ```
 
-## Supabase: esquema e autorização
+Se o projeto não tiver o comando `start` configurado no `package.json`, utilizar:
 
-A aplicação espera uma tabela `public.produtos` com os campos compatíveis com `src/app/models/produto.ts`: `id`, `title`, `description`, `price`, `category`, `stock` e `thumbnail`. A leitura do catálogo é pública. A escrita deve ser limitada pela base de dados.
-
-Antes de aplicar SQL, consulta no SQL Editor:
-
-```sql
-select schemaname, tablename, policyname, roles, cmd, qual, with_check
-from pg_policies
-where schemaname = 'public' and tablename = 'produtos';
-
-select n.nspname as schema_name, c.relname as table_name,
-       c.relrowsecurity as rls_enabled, c.relforcerowsecurity as rls_forced
-from pg_class c
-join pg_namespace n on n.oid = c.relnamespace
-where n.nspname = 'public' and c.relname = 'produtos';
+```bash
+npx ng serve
 ```
 
-O ficheiro [`supabase/admin-access.sql`](supabase/admin-access.sql) prepara uma tabela privada `shop_manager_private.administradores`, uma função `public.shop_manager_is_admin()` e políticas RLS para leitura pública e escrita administrativa. **A migração aborta se já existirem políticas em `public.produtos`**: analisa-as e adapta a migração antes de executar, sem as apagar ou substituir às cegas. Também aborta se o schema ou a função privada já existirem, para evitar colisões, e confirma que a tabela esperada existe.
+A aplicação ficará normalmente disponível em:
 
-Executa a migração revista no SQL Editor do projeto Supabase. Depois:
+http://localhost:4200/
 
-1. Cria cada conta em **Authentication** no painel Supabase. Desativa a criação pública de contas nas definições de Supabase Auth; essa configuração remota não é alterada por este repositório.
-2. Copia o UUID da conta e insere-o na lista privada pelo SQL Editor:
+## 5. API e fonte de dados
 
-   ```sql
-   insert into shop_manager_private.administradores (user_id)
-   values ('<UUID_DO_UTILIZADOR>')
-   on conflict (user_id) do nothing;
-   ```
+A aplicação utiliza o **Supabase** como fonte de dados para armazenar e consultar os produtos. O Supabase Auth é utilizado para a autenticação, enquanto as permissões de administração são verificadas através da configuração de segurança da base de dados.
 
-3. Para remover autorização, executa `delete from shop_manager_private.administradores where user_id = '<UUID_DO_UTILIZADOR>';`.
-4. Testa a leitura como visitante e tenta `INSERT`, `UPDATE` e `DELETE` como visitante e como utilizador autenticado sem autorização. As três escritas têm de ser recusadas; uma conta listada como administradora deve conseguir gerir produtos.
-
-## GitHub Pages
-
-O workflow `.github/workflows/main.yml` publica o build em `/projeto-angular/`, cria `404.html` para rotas profundas e espera os GitHub Secrets `SUPABASE_URL` e `SUPABASE_KEY` no ambiente `github-pages`. A chave tem de ser pública anon/publishable. A validação do workflow rejeita uma chave `service_role`/`sb_secret_` e URL inválido, sem imprimir os valores.
-
-Antes do build de produção, o workflow valida os Secrets e prepara `src/environments/environment.ts` no runner a partir deles. Esse ficheiro é sobrescrito só durante o job e não altera o checkout nem exige credenciais versionadas. Não coloques credenciais no código versionado. Depois da publicação, confirma o resultado do workflow, o URL de Pages, catálogo, imagens e carregamento direto de rotas internas. A publicação e os Secrets remotos ainda não foram confirmados.
+A comunicação com os dados é realizada através de pedidos HTTP, utilizando o `HttpClient` do Angular.
 
