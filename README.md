@@ -72,14 +72,9 @@ Executa a migração revista no SQL Editor do projeto Supabase. Depois:
 3. Para remover autorização, executa `delete from shop_manager_private.administradores where user_id = '<UUID_DO_UTILIZADOR>';`.
 4. Testa a leitura como visitante e tenta `INSERT`, `UPDATE` e `DELETE` como visitante e como utilizador autenticado sem autorização. As três escritas têm de ser recusadas; uma conta listada como administradora deve conseguir gerir produtos.
 
-Não foi possível inspecionar o projeto Supabase remoto nesta execução. O estado atual das tabelas, grants e políticas tem de ser confirmado antes da migração; o SQL no repositório é uma proposta preparada, não uma alteração já aplicada.
-
 ## GitHub Pages
 
 O workflow `.github/workflows/main.yml` publica o build em `/projeto-angular/`, cria `404.html` para rotas profundas e espera os GitHub Secrets `SUPABASE_URL` e `SUPABASE_KEY` no ambiente `github-pages`. A chave tem de ser pública anon/publishable. A validação do workflow rejeita uma chave `service_role`/`sb_secret_` e URL inválido, sem imprimir os valores.
 
 Antes do build de produção, o workflow valida os Secrets e prepara `src/environments/environment.ts` no runner a partir deles. Esse ficheiro é sobrescrito só durante o job e não altera o checkout nem exige credenciais versionadas. Não coloques credenciais no código versionado. Depois da publicação, confirma o resultado do workflow, o URL de Pages, catálogo, imagens e carregamento direto de rotas internas. A publicação e os Secrets remotos ainda não foram confirmados.
 
-## JSON Server
-
-O JSON Server já não faz parte do runtime nem do requisito `HttpClient`, que é cumprido pelos pedidos de `ProdutoService` ao endpoint REST do Supabase. A dependência, o script `api` e `api.config.ts` foram removidos. `db.json` foi mantido como referência/possível fonte para carga inicial; a aplicação não o consulta.
