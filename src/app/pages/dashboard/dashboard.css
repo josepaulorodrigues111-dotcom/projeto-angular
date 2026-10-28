@@ -4,34 +4,30 @@
   color: #171717;
 }
 
-:host > h1 {
-  width: min(100% - 48px, 1440px);
-  margin: 0 auto;
-  padding-top: 36px;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  letter-spacing: -0.05em;
-}
-
+:host > h1,
 .resumo,
 .categorias,
 .tabela-produtos,
-:host > p,
-.erro,
-.modal-fundo {
-  box-sizing: border-box;
+.mensagem-estado,
+.erro {
+  width: min(100% - 48px, 1440px);
+  margin-right: auto;
+  margin-left: auto;
 }
 
-.resumo,
-.categorias,
-.tabela-produtos {
-  width: min(100% - 48px, 1440px);
-  margin: 28px auto;
+:host > h1 {
+  margin-top: 0;
+  margin-bottom: 28px;
+  padding-top: 36px;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  letter-spacing: -0.05em;
 }
 
 .resumo {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
+  margin-bottom: 32px;
 }
 
 .caixa {
@@ -62,8 +58,14 @@
   line-height: 1.2;
 }
 
+.numero.valor {
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+}
+
 .categorias,
 .tabela-produtos {
+  margin-top: 28px;
+  margin-bottom: 28px;
   padding: 26px;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
@@ -74,7 +76,6 @@
 .tabela-produtos h2 {
   margin: 0 0 22px;
   font-size: 1.15rem;
-  font-weight: 700;
   letter-spacing: -0.025em;
 }
 
@@ -134,7 +135,6 @@ th {
   color: #737373;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.035em;
   white-space: nowrap;
 }
 
@@ -143,10 +143,6 @@ td {
   border-bottom: 1px solid #f0f0f0;
   font-size: 0.875rem;
   vertical-align: middle;
-}
-
-tbody tr {
-  transition: background-color 0.15s;
 }
 
 tbody tr:hover {
@@ -166,20 +162,12 @@ tbody tr:last-child td {
 
 .link-produto {
   text-decoration: none;
-  transition: color 0.2s;
 }
 
 .link-produto:hover {
   color: #737373;
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-
-.link-produto:focus-visible,
-.botao-acao:focus-visible,
-.botao-modal:focus-visible {
-  outline: 2px solid #525252;
-  outline-offset: 3px;
 }
 
 .estado {
@@ -215,16 +203,16 @@ tbody tr:last-child td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
-  margin: 2px 4px 2px 0;
-  padding: 7px 11px;
+  min-height: 36px;
+  padding: 8px 12px;
   border: 1px solid #e5e5e5;
   border-radius: 7px;
   background: #fff;
   color: #262626;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
@@ -252,9 +240,24 @@ tbody tr:last-child td {
   cursor: not-allowed;
 }
 
+.link-produto:focus-visible,
+.botao-acao:focus-visible,
+.botao-modal:focus-visible {
+  outline: 2px solid #525252;
+  outline-offset: 3px;
+}
+
+.lista-mobile {
+  display: none;
+}
+
+.mensagem-estado {
+  padding: 32px;
+  color: #737373;
+  text-align: center;
+}
+
 .erro {
-  width: min(100% - 48px, 1440px);
-  margin: 20px auto;
   padding: 14px 16px;
   border: 1px solid #fecaca;
   border-radius: 8px;
@@ -277,6 +280,7 @@ tbody tr:last-child td {
 }
 
 .modal-confirmacao {
+  box-sizing: border-box;
   width: min(100%, 440px);
   padding: 30px;
   border: 1px solid #e5e5e5;
@@ -352,11 +356,9 @@ tbody tr:last-child td {
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .botao-modal.cancelar:hover:not(:disabled) {
-  border-color: #a3a3a3;
   background: #f5f5f5;
 }
 
@@ -371,10 +373,6 @@ tbody tr:last-child td {
   background: #991b1b;
 }
 
-@keyframes rodar {
-  to { transform: rotate(360deg); }
-}
-
 @keyframes aparecer {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -385,6 +383,7 @@ tbody tr:last-child td {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Tablets */
 @media (max-width: 1050px) {
   .resumo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -400,46 +399,164 @@ tbody tr:last-child td {
   }
 }
 
-@media (max-width: 600px) {
+/* Telemóveis: cartões sem scroll horizontal */
+@media (max-width: 650px) {
   :host > h1,
   .resumo,
   .categorias,
   .tabela-produtos,
+  .mensagem-estado,
   .erro {
     width: calc(100% - 32px);
   }
 
   :host > h1 {
     padding-top: 28px;
+    margin-bottom: 22px;
   }
 
   .resumo {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 22px auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 22px;
   }
 
   .caixa {
-    padding: 19px;
+    gap: 8px;
+    padding: 15px;
+    font-size: 0.8rem;
+  }
+
+  .numero {
+    font-size: 1.6rem;
+  }
+
+  .numero.valor {
+    font-size: 1.25rem;
   }
 
   .categorias,
   .tabela-produtos {
-    margin: 22px auto;
+    margin-top: 22px;
+    margin-bottom: 22px;
     padding: 18px;
+  }
+
+  .categorias h2,
+  .tabela-produtos h2 {
+    margin-bottom: 16px;
+    font-size: 1.05rem;
   }
 
   .lista-categorias {
     grid-template-columns: 1fr;
   }
 
-  table {
-    min-width: 650px;
+  .tabela-desktop {
+    display: none;
   }
 
-  th,
-  td {
-    padding: 13px 12px;
+  .lista-mobile {
+    display: grid;
+    gap: 12px;
+  }
+
+  .produto-mobile {
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .produto-mobile-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .produto-mobile-info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .produto-mobile-nome {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: #171717;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .produto-mobile-categoria {
+    color: #737373;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+
+  .produto-mobile-topo .estado {
+    flex-shrink: 0;
+    padding: 5px 7px;
+    font-size: 0.7rem;
+  }
+
+  .produto-mobile-detalhes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .produto-mobile-detalhes > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .detalhe-rotulo {
+    color: #737373;
+    font-size: 0.75rem;
+  }
+
+  .produto-mobile-detalhes strong {
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+  }
+
+  .produto-mobile-acoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .botao-acao {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 9px 6px;
+  }
+}
+
+/* Telemóveis muito estreitos */
+@media (max-width: 360px) {
+  .produto-mobile {
+    padding: 12px;
+  }
+
+  .produto-mobile-topo {
+    flex-direction: column;
+  }
+
+  .produto-mobile-acoes {
+    gap: 7px;
   }
 }
 

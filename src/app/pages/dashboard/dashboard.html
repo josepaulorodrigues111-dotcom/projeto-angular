@@ -1,7 +1,8 @@
+
 <h1>Dashboard</h1>
 
 @if (carregando()) {
-  <p>A carregar dados...</p>
+  <p class="mensagem-estado">A carregar dados...</p>
 } @else if (erro()) {
   <p class="erro">{{ erro() }}</p>
 } @else {
@@ -22,7 +23,7 @@
     </div>
 
     <div class="caixa">
-      <span class="numero">{{ valorStock() | currency:'EUR':'symbol':'1.2-2' }}</span>
+      <span class="numero valor">{{ valorStock() | currency:'EUR':'symbol':'1.2-2' }}</span>
       <span>Valor em stock</span>
     </div>
   </section>
@@ -50,7 +51,8 @@
     @if (produtos().length === 0) {
       <p>Não existem produtos para apresentar.</p>
     } @else {
-      <div class="tabela-scroll">
+      <!-- Tabela para computadores e tablets maiores -->
+      <div class="tabela-scroll tabela-desktop">
         <table>
           <thead>
             <tr>
@@ -77,7 +79,9 @@
 
                 <td>{{ p.category | titlecase }}</td>
 
-                <td>{{ p.price | currency:'EUR':'symbol':'1.2-2' }}</td>
+                <td class="preco">
+                  {{ p.price | currency:'EUR':'symbol':'1.2-2' }}
+                </td>
 
                 <td>
                   @if (p.stock === 0) {
@@ -111,6 +115,67 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Cartões para telemóveis -->
+      <div class="lista-mobile">
+        @for (p of produtos(); track p.id) {
+          <article class="produto-mobile">
+            <div class="produto-mobile-topo">
+              <div class="produto-mobile-info">
+                <a
+                  [routerLink]="['/produtos', p.id]"
+                  class="produto-mobile-nome link-produto"
+                  [attr.aria-label]="'Ver detalhes de ' + p.title"
+                >
+                  {{ p.title }}
+                </a>
+
+                <span class="produto-mobile-categoria">
+                  {{ p.category | titlecase }}
+                </span>
+              </div>
+
+              @if (p.stock === 0) {
+                <span class="estado esgotado">Esgotado</span>
+              } @else if (p.stock <= 5) {
+                <span class="estado stock-baixo">Stock baixo</span>
+              } @else {
+                <span class="estado stock-normal">{{ p.stock }} un.</span>
+              }
+            </div>
+
+            <div class="produto-mobile-detalhes">
+              <div>
+                <span class="detalhe-rotulo">Preço</span>
+                <strong>{{ p.price | currency:'EUR':'symbol':'1.2-2' }}</strong>
+              </div>
+
+              <div>
+                <span class="detalhe-rotulo">Stock</span>
+                <strong>{{ p.stock }} unidades</strong>
+              </div>
+            </div>
+
+            <div class="produto-mobile-acoes">
+              <a
+                [routerLink]="['/admin', p.id, 'editar']"
+                class="botao-acao editar"
+              >
+                Editar
+              </a>
+
+              <button
+                type="button"
+                class="botao-acao apagar"
+                (click)="abrirModalApagar(p)"
+                [disabled]="apagando()"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        }
+      </div>
     }
   </section>
 }
@@ -129,9 +194,7 @@
       aria-describedby="descricao-modal"
       (click)="$event.stopPropagation()"
     >
-      <div class="modal-icone" aria-hidden="true">
-        !
-      </div>
+      <div class="modal-icone" aria-hidden="true">!</div>
 
       <h2 id="titulo-modal">Eliminar produto</h2>
 
