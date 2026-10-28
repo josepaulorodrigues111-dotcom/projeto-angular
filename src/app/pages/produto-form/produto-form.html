@@ -1,71 +1,224 @@
-<a routerLink="/produtos">← Voltar à lista</a>
+<div class="pagina-formulario">
+  <a class="link-voltar" routerLink="/produtos">
+    <span aria-hidden="true">←</span>
+    Voltar à lista de produtos
+  </a>
 
-<h1>{{ modoEdicao ? 'Editar produto' : 'Novo produto' }}</h1>
+  <header class="cabecalho-formulario">
+    <div>
+      <p class="sobretitulo">ADMINISTRAÇÃO / PRODUTOS</p>
+      <h1>{{ modoEdicao ? 'Editar produto' : 'Novo produto' }}</h1>
+      <p class="descricao">
+        {{
+          modoEdicao
+            ? 'Atualiza as informações do produto e guarda as alterações.'
+            : 'Preenche os campos abaixo para adicionar um produto ao catálogo.'
+        }}
+      </p>
+    </div>
 
-@if (carregando()) {
-  <p>A carregar...</p>
-} @else {
-  @if (erro()) {
-    <p class="erro" role="alert">{{ erro() }}</p>
+    <span class="etiqueta-modo">
+      {{ modoEdicao ? 'Edição' : 'Novo registo' }}
+    </span>
+  </header>
+
+  @if (carregando()) {
+    <section class="cartao-formulario estado-carregamento" aria-live="polite">
+      <span class="indicador-carregamento" aria-hidden="true"></span>
+      <p>A carregar os dados do produto...</p>
+    </section>
+  } @else {
+    @if (erro()) {
+      <div class="mensagem-erro" role="alert">
+        <span aria-hidden="true">!</span>
+        <p>{{ erro() }}</p>
+      </div>
+    }
+
+    <form
+      class="cartao-formulario"
+      [formGroup]="form"
+      (ngSubmit)="submeter()"
+      novalidate
+    >
+      <section class="secao-formulario">
+        <div class="titulo-secao">
+          <span class="numero-secao">01</span>
+          <div>
+            <h2>Informações do produto</h2>
+            <p>Identificação e descrição do artigo.</p>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="title">Título <span>*</span></label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="Ex.: Teclado Mecânico"
+            autocomplete="off"
+            [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid"
+            aria-describedby="title-ajuda title-erro"
+          />
+          <small id="title-ajuda">Utiliza um nome claro e fácil de identificar.</small>
+
+          @if (form.controls.title.touched && form.controls.title.invalid) {
+            <p class="erro" id="title-erro">
+              @if (form.controls.title.errors?.['required']) {
+                O título é obrigatório.
+              } @else {
+                O título deve ter pelo menos 3 caracteres.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="description">Descrição <span>*</span></label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            placeholder="Descreve as principais características do produto..."
+            [attr.aria-invalid]="form.controls.description.touched && form.controls.description.invalid"
+            aria-describedby="description-erro"
+          ></textarea>
+
+          @if (form.controls.description.touched && form.controls.description.invalid) {
+            <p class="erro" id="description-erro">
+              @if (form.controls.description.errors?.['required']) {
+                A descrição é obrigatória.
+              } @else {
+                A descrição deve ter pelo menos 10 caracteres.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="category">Categoria <span>*</span></label>
+          <input
+            id="category"
+            type="text"
+            formControlName="category"
+            placeholder="Ex.: Periféricos"
+            [attr.aria-invalid]="form.controls.category.touched && form.controls.category.invalid"
+            aria-describedby="category-erro"
+          />
+
+          @if (form.controls.category.touched && form.controls.category.invalid) {
+            <p class="erro" id="category-erro">A categoria é obrigatória.</p>
+          }
+        </div>
+      </section>
+
+      <div class="separador"></div>
+
+      <section class="secao-formulario">
+        <div class="titulo-secao">
+          <span class="numero-secao">02</span>
+          <div>
+            <h2>Preço e inventário</h2>
+            <p>Define o preço de venda e a quantidade disponível.</p>
+          </div>
+        </div>
+
+        <div class="grelha-campos">
+          <div class="campo">
+            <label for="price">Preço (€) <span>*</span></label>
+            <div class="campo-com-sufixo">
+              <input
+                id="price"
+                type="number"
+                min="0.01"
+                step="0.01"
+                formControlName="price"
+                placeholder="0,00"
+                [attr.aria-invalid]="form.controls.price.touched && form.controls.price.invalid"
+                aria-describedby="price-erro"
+              />
+              <span>EUR</span>
+            </div>
+
+            @if (form.controls.price.touched && form.controls.price.invalid) {
+              <p class="erro" id="price-erro">O preço deve ser maior que 0.</p>
+            }
+          </div>
+
+          <div class="campo">
+            <label for="stock">Stock disponível <span>*</span></label>
+            <input
+              id="stock"
+              type="number"
+              min="0"
+              step="1"
+              formControlName="stock"
+              placeholder="0"
+              [attr.aria-invalid]="form.controls.stock.touched && form.controls.stock.invalid"
+              aria-describedby="stock-ajuda stock-erro"
+            />
+            <small id="stock-ajuda">A quantidade não pode ser negativa.</small>
+
+            @if (form.controls.stock.touched && form.controls.stock.invalid) {
+              <p class="erro" id="stock-erro">O stock não pode ser negativo.</p>
+            }
+          </div>
+        </div>
+      </section>
+
+      <div class="separador"></div>
+
+      <section class="secao-formulario">
+        <div class="titulo-secao">
+          <span class="numero-secao">03</span>
+          <div>
+            <h2>Imagem do produto</h2>
+            <p>Indica o caminho ou endereço da imagem.</p>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="thumbnail">Caminho ou URL da imagem <span>*</span></label>
+          <input
+            id="thumbnail"
+            type="text"
+            formControlName="thumbnail"
+            placeholder="Ex.: images/teclado.jpg ou https://..."
+            [attr.aria-invalid]="form.controls.thumbnail.touched && form.controls.thumbnail.invalid"
+            aria-describedby="thumbnail-ajuda thumbnail-erro"
+          />
+          <small id="thumbnail-ajuda">
+            Confirma que a imagem está acessível no site ou através do endereço indicado.
+          </small>
+
+          @if (form.controls.thumbnail.touched && form.controls.thumbnail.invalid) {
+            <p class="erro" id="thumbnail-erro">A imagem é obrigatória.</p>
+          }
+        </div>
+      </section>
+
+      <p class="nota-obrigatorios">
+        <span>*</span> Campos de preenchimento obrigatório
+      </p>
+
+      <footer class="acoes-formulario">
+        <a class="botao botao-secundario" routerLink="/admin">
+          Cancelar
+        </a>
+
+        <button
+          class="botao botao-principal"
+          type="submit"
+          [disabled]="form.invalid || guardando()"
+        >
+          @if (guardando()) {
+            A guardar...
+          } @else {
+            {{ modoEdicao ? 'Guardar alterações' : 'Criar produto' }}
+          }
+        </button>
+      </footer>
+    </form>
   }
-
-  <form [formGroup]="form" (ngSubmit)="submeter()">
-    <label>
-      Título
-      <input type="text" formControlName="title" />
-    </label>
-    @if (form.controls.title.touched && form.controls.title.invalid) {
-      <p class="erro">
-        @if (form.controls.title.errors?.['required']) { O título é obrigatório. }
-        @else { O título deve ter pelo menos 3 caracteres. }
-      </p>
-    }
-
-    <label>
-      Descrição
-      <textarea formControlName="description" rows="3"></textarea>
-    </label>
-    @if (form.controls.description.touched && form.controls.description.invalid) {
-      <p class="erro">
-        @if (form.controls.description.errors?.['required']) { A descrição é obrigatória. }
-        @else { A descrição deve ter pelo menos 10 caracteres. }
-      </p>
-    }
-
-    <label>
-      Preço (€)
-      <input type="number" step="0.01" formControlName="price" />
-    </label>
-    @if (form.controls.price.touched && form.controls.price.invalid) {
-      <p class="erro">O preço deve ser maior que 0.</p>
-    }
-
-    <label>
-      Categoria
-      <input type="text" formControlName="category" />
-    </label>
-    @if (form.controls.category.touched && form.controls.category.invalid) {
-      <p class="erro">A categoria é obrigatória.</p>
-    }
-
-    <label>
-      Stock
-      <input type="number" formControlName="stock" />
-    </label>
-    @if (form.controls.stock.touched && form.controls.stock.invalid) {
-      <p class="erro">O stock não pode ser negativo.</p>
-    }
-
-    <label>
-      Imagem (caminho ou URL)
-      <input type="text" formControlName="thumbnail" />
-    </label>
-    @if (form.controls.thumbnail.touched && form.controls.thumbnail.invalid) {
-      <p class="erro">A imagem é obrigatória.</p>
-    }
-
-    <button type="submit" [disabled]="form.invalid">
-      {{ modoEdicao ? 'Guardar alterações' : 'Criar produto' }}
-    </button>
-  </form>
-}
+</div>
