@@ -20,7 +20,7 @@ O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript p
 
 A aplicação está disponível através do GitHub Pages:
 
-[**Aceder ao ShopManager**](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)
+[**Aceder ao Projeto **](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)
 
 Repositório do projeto: [GitHub — projeto-angular](https://github.com/josepaulorodrigues111-dotcom/projeto-angular)
 
