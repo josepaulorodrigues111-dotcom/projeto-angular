@@ -1,20 +1,63 @@
-<header class="cabecalho">
-  <a routerLink="/" class="logo" aria-label="LojaDos400 - Página inicial">
+
+<header class="cabecalho" [class.menu-aberto]="menuAberto">
+  <a
+    routerLink="/"
+    class="logo"
+    aria-label="LojaDos400 - Página inicial"
+    (click)="fecharMenu()"
+  >
     <span class="logo-marca">L</span>
     <span>LojaDos400</span>
   </a>
 
-  <nav aria-label="Navegação principal">
-    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">
+  <button
+    type="button"
+    class="botao-menu"
+    [attr.aria-expanded]="menuAberto"
+    aria-controls="navegacao-principal"
+    [attr.aria-label]="menuAberto ? 'Fechar menu' : 'Abrir menu'"
+    (click)="alternarMenu()"
+  >
+    @if (menuAberto) {
+      <svg viewBox="0 0 24 24" width="24" height="24"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+    } @else {
+      <svg viewBox="0 0 24 24" width="24" height="24"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    }
+  </button>
+
+  <nav id="navegacao-principal" aria-label="Navegação principal">
+    <a
+      routerLink="/"
+      routerLinkActive="ativo"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="fecharMenu()"
+    >
       Início
     </a>
 
-    <a routerLink="/produtos" routerLinkActive="ativo">
+    <a
+      routerLink="/produtos"
+      routerLinkActive="ativo"
+      (click)="fecharMenu()"
+    >
       Produtos
     </a>
 
     @if (auth.eAdmin()) {
-      <a routerLink="/admin" routerLinkActive="ativo" class="admin">
+      <a
+        routerLink="/admin"
+        routerLinkActive="ativo"
+        class="admin"
+        (click)="fecharMenu()"
+      >
         Administração
       </a>
     }
@@ -26,6 +69,7 @@
       routerLinkActive="ativo"
       class="carrinho"
       aria-label="Carrinho"
+      (click)="fecharMenu()"
     >
       <svg
         viewBox="0 0 24 24"
@@ -55,7 +99,12 @@
         Sair
       </button>
     } @else {
-      <a routerLink="/login" routerLinkActive="ativo" class="botao-entrar">
+      <a
+        routerLink="/login"
+        routerLinkActive="ativo"
+        class="botao-entrar"
+        (click)="fecharMenu()"
+      >
         Entrar
       </a>
     }

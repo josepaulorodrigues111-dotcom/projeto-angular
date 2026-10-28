@@ -1,3 +1,4 @@
+
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -13,10 +14,21 @@ export class Cabecalho {
   readonly auth = inject(AuthService);
   readonly carrinho = inject(CarrinhoService);
   private readonly router = inject(Router);
+
   erroSair = '';
+  menuAberto = false;
+
+  alternarMenu(): void {
+    this.menuAberto = !this.menuAberto;
+  }
+
+  fecharMenu(): void {
+    this.menuAberto = false;
+  }
 
   async sair(): Promise<void> {
     this.erroSair = '';
+    this.fecharMenu();
 
     try {
       await this.auth.sair();
