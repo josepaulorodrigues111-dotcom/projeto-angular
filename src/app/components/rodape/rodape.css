@@ -147,40 +147,76 @@
   }
 }
 
+
 /* Telemóveis */
 @media (max-width: 600px) {
   .rodape {
-    margin-top: 40px;
-    padding: 32px 20px 0;
+    margin-top: 28px;
+    padding: 24px 16px 0;
   }
 
   .rodape-conteudo {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
-    padding-bottom: 28px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+    padding-bottom: 20px;
+  }
+
+  /* Marca ocupa toda a largura */
+  .rodape-marca {
+    grid-column: 1 / -1;
   }
 
   .nome-loja {
-    font-size: 20px;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+
+  .simbolo-loja {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-size: 16px;
   }
 
   .descricao-loja {
-    max-width: 320px;
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.5;
   }
 
+  /* Colunas mais compactas */
   .rodape-coluna {
-    gap: 10px;
+    min-width: 0;
+    gap: 8px;
   }
 
   .rodape-coluna h2 {
-    margin-bottom: 5px;
+    margin: 0 0 3px;
+    font-size: 11px;
   }
 
+  .rodape p,
+  .link-navegacao {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .rodape-coluna p {
+    overflow-wrap: anywhere;
+  }
+
+  /* Barra inferior */
   .rodape-inferior {
-    align-items: flex-start;
     flex-direction: column;
-    gap: 8px;
-    padding: 18px 0;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 14px 0;
+  }
+
+  .rodape-inferior p {
+    font-size: 11px;
+    line-height: 1.5;
   }
 
   .rodape-inferior .texto-final {
@@ -188,8 +224,20 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .rodape-coluna a {
-    transition: none;
+/* Ecrãs muito estreitos */
+@media (max-width: 360px) {
+  .rodape {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .rodape-conteudo {
+    column-gap: 10px;
+  }
+
+  .rodape p,
+  .link-navegacao {
+    font-size: 11px;
   }
 }
+
