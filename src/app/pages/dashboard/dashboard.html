@@ -1,3 +1,4 @@
+
 <h1>Dashboard</h1>
 
 @if (carregando()) {
@@ -45,7 +46,13 @@
   </section>
 
   <section class="tabela-produtos">
-    <h2>Gestão de produtos</h2>
+    <div class="cabecalho-gestao">
+      <h2>Gestão de produtos</h2>
+
+      <a routerLink="/admin/novo" class="botao-novo">
+        + Novo produto
+      </a>
+    </div>
 
     @if (produtos().length === 0) {
       <p>Não existem produtos para apresentar.</p>
