@@ -1,8 +1,10 @@
+
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { ProdutoService } from '../../services/produto.service';
 import { CarrinhoService } from '../../services/carrinho.service';
+import { AuthService } from '../../services/auth.service';
 import { Produto } from '../../models/produto';
 
 @Component({
@@ -13,8 +15,12 @@ import { Produto } from '../../models/produto';
 })
 export class ProdutoDetalhe implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly produtoService = inject(ProdutoService);
   private readonly carrinhoService = inject(CarrinhoService);
+  private readonly auth = inject(AuthService);
+
+  private readonly chaveProdutoPendente = 'produtoPendenteCarrinho';
 
   produto = signal<Produto | null>(null);
   carregando = signal(true);
@@ -54,6 +60,33 @@ export class ProdutoDetalhe implements OnInit {
       return;
     }
 
+    // Sem sessão iniciada, guardar o produto e pedir autenticação.
+    if (!this.auth.autenticado()) {
+      try {
+        sessionStorage.setItem(
+          this.chaveProdutoPendente,
+          JSON.stringify(produto),
+        );
+
+        void this.router.navigate(['/login'], {
+          queryParams: {
+            returnUrl: '/carrinho',
+          },
+        });
+      } catch {
+        this.mensagemCarrinho.set(
+          'Não foi possível continuar. Verifica se o armazenamento do navegador está disponível.',
+        );
+      }
+
+      return;
+    }
+
+    // Só adiciona diretamente se a sessão já estiver iniciada.
+    this.adicionarProduto(produto);
+  }
+
+  private adicionarProduto(produto: Produto): void {
     const quantidadeAntes =
       this.carrinhoService.itens()
         .find((item) => item.produto.id === produto.id)?.quantidade ?? 0;
@@ -90,8 +123,7 @@ export class ProdutoDetalhe implements OnInit {
       .replace(/^\/+/, '')
       .replace(/^projeto-angular\//i, '');
 
-    // Usa o endereço base da aplicação, incluindo o subdiretório
-    // /projeto-angular/ quando a aplicação está no GitHub Pages.
+    // Funciona em localhost e no subdiretório do GitHub Pages.
     return new URL(relativo, document.baseURI).toString();
   }
 }
