@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Produto } from '../../models/produto';
+import { caminhoImagem } from '../../utils/imagem.util';
 
 @Component({
   selector: 'app-produto-card',
@@ -20,16 +21,5 @@ export class ProdutoCard {
     return 'disponivel';
   }
 
-  caminhoImagem(caminho: string): string {
-    if (!caminho) return '';
-
-    if (/^https?:\/\//i.test(caminho)) {
-      return caminho;
-    }
-
-    return new URL(
-      caminho.replace(/^\/+/, ''),
-      document.baseURI
-    ).href;
-  }
+  caminhoImagem = caminhoImagem;
 }

@@ -5,6 +5,7 @@ import { ProdutoService } from '../../services/produto.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { AuthService } from '../../services/auth.service';
 import { Produto } from '../../models/produto';
+import { caminhoImagem } from '../../utils/imagem.util';
 
 @Component({
   imports: [RouterLink, CurrencyPipe, TitleCasePipe],
@@ -25,6 +26,9 @@ export class ProdutoDetalhe implements OnInit {
   carregando = signal(true);
   erro = signal('');
   mensagemCarrinho = signal('');
+
+  // Utiliza a função partilhada para resolver os caminhos das imagens.
+  caminhoImagem = caminhoImagem;
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -103,26 +107,5 @@ export class ProdutoDetalhe implements OnInit {
         'Não foi possível adicionar mais unidades. Verifica o stock disponível.',
       );
     }
-  }
-
-  caminhoImagem(caminho: string): string {
-    if (!caminho) {
-      return '';
-    }
-
-    const valor = caminho.trim();
-
-    // Mantém URLs completas, por exemplo imagens alojadas no Supabase.
-    if (/^https?:\/\//i.test(valor)) {
-      return valor;
-    }
-
-    // Remove barras iniciais e o prefixo do GitHub Pages, se existir.
-    const relativo = valor
-      .replace(/^\/+/, '')
-      .replace(/^projeto-angular\//i, '');
-
-    // Funciona em localhost e no subdiretório do GitHub Pages.
-    return new URL(relativo, document.baseURI).toString();
   }
 }
