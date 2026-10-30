@@ -1,5 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
+import {
+  createClient,
+  Session,
+  SupabaseClient,
+} from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -90,10 +94,19 @@ export class AuthService {
     await this.verificarAdministrador(data.session);
   }
 
-  async registar(email: string, password: string): Promise<void> {
+  async registar(
+    nome: string,
+    email: string,
+    password: string
+  ): Promise<boolean> {
     const { data, error } = await this.client.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: nome,
+        },
+      },
     });
 
     if (error) {
@@ -102,6 +115,10 @@ export class AuthService {
 
     this.atualizarSessao(data.session);
     await this.verificarAdministrador(data.session);
+
+    // true: sessão criada.
+    // false: é necessária confirmação de email.
+    return data.session !== null;
   }
 
   async sair(): Promise<void> {
@@ -126,7 +143,10 @@ export class AuthService {
       return 'Confirma o email antes de iniciar sessão.';
     }
 
-    if (mensagem.includes('already registered')) {
+    if (
+      mensagem.includes('already registered') ||
+      mensagem.includes('user already registered')
+    ) {
       return 'Este email já tem conta.';
     }
 
@@ -135,6 +155,13 @@ export class AuthService {
       mensagem.includes('signup_disabled')
     ) {
       return 'O registo de novas contas está temporariamente desativado.';
+    }
+
+    if (
+      mensagem.includes('password should be at least') ||
+      mensagem.includes('weak password')
+    ) {
+      return 'A palavra-passe não cumpre os requisitos de segurança.';
     }
 
     if (mensagem.includes('network') || mensagem.includes('fetch')) {

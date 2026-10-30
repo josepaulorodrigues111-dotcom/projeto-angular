@@ -1,0 +1,116 @@
+
+<section class="registo">
+  <h1>Criar conta</h1>
+
+  <p>Preenche os dados para criares a tua conta de cliente.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submeter()">
+
+    <!-- Nome -->
+    <label>
+      Nome
+      <input
+        type="text"
+        formControlName="nome"
+        autocomplete="name"
+        placeholder="O teu nome"
+      />
+    </label>
+
+    @if (form.controls.nome.touched && form.controls.nome.invalid) {
+      <p class="erro">
+        O nome é obrigatório e deve ter pelo menos 2 caracteres.
+      </p>
+    }
+
+    <!-- Email -->
+    <label>
+      Email
+      <input
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        placeholder="exemplo@email.com"
+      />
+    </label>
+
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <p class="erro">
+        @if (form.controls.email.errors?.['required']) {
+          O email é obrigatório.
+        } @else {
+          Introduz um email válido.
+        }
+      </p>
+    }
+
+    <!-- Palavra-passe -->
+    <label>
+      Palavra-passe
+      <input
+        type="password"
+        formControlName="password"
+        autocomplete="new-password"
+        placeholder="Mínimo de 6 caracteres"
+      />
+    </label>
+
+    @if (
+      form.controls.password.touched &&
+      form.controls.password.invalid
+    ) {
+      <p class="erro">
+        A palavra-passe deve ter pelo menos 6 caracteres.
+      </p>
+    }
+
+    <!-- Confirmar palavra-passe -->
+    <label>
+      Confirmar palavra-passe
+      <input
+        type="password"
+        formControlName="confirmarPassword"
+        autocomplete="new-password"
+        placeholder="Repete a palavra-passe"
+      />
+    </label>
+
+    @if (
+      form.controls.confirmarPassword.touched &&
+      form.controls.confirmarPassword.invalid
+    ) {
+      <p class="erro">
+        A confirmação da palavra-passe é obrigatória.
+      </p>
+    }
+
+    <!-- Mensagem de erro -->
+    @if (erro()) {
+      <p class="erro" role="alert">
+        {{ erro() }}
+      </p>
+    }
+
+    <!-- Mensagem de sucesso -->
+    @if (sucesso()) {
+      <p class="sucesso" role="status">
+        {{ sucesso() }}
+      </p>
+    }
+
+    <!-- Botão -->
+    <button
+      type="submit"
+      [disabled]="form.invalid || aProcessar()"
+    >
+      {{ aProcessar() ? 'A criar conta...' : 'Criar conta' }}
+    </button>
+
+  </form>
+
+  <!-- Ligação para o login -->
+  <p class="link-login">
+    Já tens conta?
+    <a routerLink="/login">Iniciar sessão</a>
+  </p>
+</section>
