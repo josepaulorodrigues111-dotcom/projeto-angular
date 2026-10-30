@@ -59,18 +59,16 @@ export class Login {
         return;
       }
 
-      // Se o utilizador tentou adicionar um produto antes do login,
-      // adicioná-lo agora que a sessão está iniciada.
+      // Recuperar o produto que o utilizador tentou adicionar antes do login.
       const produtoPendente = this.obterProdutoPendente();
 
       if (produtoPendente) {
         this.carrinhoService.adicionar(produtoPendente);
-
         await this.router.navigateByUrl('/carrinho');
         return;
       }
 
-      // Comportamento normal do login, quando não existe produto pendente.
+      // Manter o destino original, quando existe.
       const destino = this.route.snapshot.queryParamMap.get('returnUrl');
 
       if (destino && destino.startsWith('/') && !destino.startsWith('//')) {
@@ -95,8 +93,7 @@ export class Login {
         return null;
       }
 
-      // Remover o produto pendente para não o adicionar novamente
-      // numa futura tentativa de login.
+      // Remover o produto para não o adicionar novamente numa futura tentativa.
       sessionStorage.removeItem(this.chaveProdutoPendente);
 
       const produto: unknown = JSON.parse(texto);

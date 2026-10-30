@@ -34,6 +34,23 @@
   font-size: 0.85rem;
 }
 
+.recuperar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.recuperar a {
+  color: #2563eb;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.recuperar a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
 .login button {
   padding: 10px;
   margin-top: 8px;

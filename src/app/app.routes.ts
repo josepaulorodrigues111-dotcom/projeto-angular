@@ -1,3 +1,4 @@
+
 import { Routes } from '@angular/router';
 import { authGuard, adminGuard } from './guards/auth.guard';
 
@@ -16,7 +17,7 @@ export const routes: Routes = [
     path: 'produtos/:id',
     loadComponent: () =>
       import('./pages/produto-detalhe/produto-detalhe').then(
-        (m) => m.ProdutoDetalhe
+        (m) => m.ProdutoDetalhe,
       ),
   },
   {
@@ -28,6 +29,20 @@ export const routes: Routes = [
     path: 'registo',
     loadComponent: () =>
       import('./pages/registo/registo').then((m) => m.Registo),
+  },
+  {
+    path: 'recuperar-password',
+    loadComponent: () =>
+      import('./pages/recuperar-password/recuperar-password').then(
+        (m) => m.RecuperarPassword,
+      ),
+  },
+  {
+    path: 'redefinir-password',
+    loadComponent: () =>
+      import('./pages/redefinir-password/redefinir-password').then(
+        (m) => m.RedefinirPassword,
+      ),
   },
   {
     path: 'carrinho',
@@ -45,7 +60,7 @@ export const routes: Routes = [
     path: 'admin/novo',
     loadComponent: () =>
       import('./pages/produto-form/produto-form').then(
-        (m) => m.ProdutoForm
+        (m) => m.ProdutoForm,
       ),
     canActivate: [adminGuard],
   },
@@ -53,7 +68,7 @@ export const routes: Routes = [
     path: 'admin/:id/editar',
     loadComponent: () =>
       import('./pages/produto-form/produto-form').then(
-        (m) => m.ProdutoForm
+        (m) => m.ProdutoForm,
       ),
     canActivate: [adminGuard],
   },

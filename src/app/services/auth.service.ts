@@ -1,3 +1,4 @@
+
 import { Injectable, signal } from '@angular/core';
 import {
   createClient,
@@ -10,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private readonly client: SupabaseClient = createClient(
     environment.supabaseUrl,
-    environment.supabaseKey
+    environment.supabaseKey,
   );
 
   private readonly pronta: Promise<void>;
@@ -50,7 +51,7 @@ export class AuthService {
   }
 
   private async verificarAdministrador(
-    sessao: Session | null
+    sessao: Session | null,
   ): Promise<void> {
     if (!sessao) {
       this.eAdmin.set(false);
@@ -59,10 +60,10 @@ export class AuthService {
 
     try {
       const { data, error } = await this.client.rpc(
-        'shop_manager_is_admin'
+        'shop_manager_is_admin',
       );
 
-      // Uma resposta antiga nunca deve alterar a permissão de outra sessão.
+      // Uma resposta antiga não deve alterar as permissões de outra sessão.
       if (this.sessao()?.user.id !== sessao.user.id) {
         return;
       }
@@ -97,7 +98,7 @@ export class AuthService {
   async registar(
     nome: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<boolean> {
     const { data, error } = await this.client.auth.signUp({
       email,
@@ -119,6 +120,31 @@ export class AuthService {
     // true: sessão criada.
     // false: é necessária confirmação de email.
     return data.session !== null;
+  }
+
+  async enviarEmailRecuperacao(email: string): Promise<void> {
+    const redirectTo = new URL(
+      'redefinir-password',
+      document.baseURI,
+    ).toString();
+
+    const { error } = await this.client.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
+
+    if (error) {
+      throw error;
+    }
+  }
+
+  async redefinirPassword(password: string): Promise<void> {
+    const { error } = await this.client.auth.updateUser({
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
   }
 
   async sair(): Promise<void> {
@@ -166,6 +192,14 @@ export class AuthService {
 
     if (mensagem.includes('network') || mensagem.includes('fetch')) {
       return 'Não foi possível contactar o Supabase. Verifica a ligação.';
+    }
+
+    if (
+      mensagem.includes('expired') ||
+      mensagem.includes('invalid') ||
+      mensagem.includes('token')
+    ) {
+      return 'A ligação é inválida ou expirou. Solicita uma nova ligação.';
     }
 
     return 'Não foi possível concluir a operação. Verifica os dados e tenta novamente.';
