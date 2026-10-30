@@ -1,60 +1,76 @@
 .login {
-  max-width: 360px;
-  margin: 0 auto;
+  width: min(100% - 2rem, 360px);
+  margin: 3rem auto;
 }
 
-form {
+.login h1 {
+  margin-bottom: 1.5rem;
+}
+
+.login form {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-label {
+.login label {
   display: flex;
   flex-direction: column;
   gap: 4px;
   font-weight: bold;
 }
 
-input {
+.login input {
   padding: 8px;
   font-size: 1rem;
   font-weight: normal;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-.erro {
+.login .erro {
   color: #c62828;
   margin: 0;
   font-size: 0.85rem;
 }
 
-button {
+.login button {
   padding: 10px;
+  margin-top: 8px;
   cursor: pointer;
-  background-color: #000;
+  background-color: #171717;
   color: #fff;
   border: none;
   border-radius: 5px;
 }
 
-button:hover:not(:disabled) {
+.login button:hover:not(:disabled) {
   background-color: #333;
 }
 
-button:disabled {
+.login button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.link {
-  background: none;
-  border: none;
-  color: #555;
-  text-decoration: underline;
-  margin-top: 8px;
+.alternativa {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #686868;
 }
 
-.link:hover {
-  background: none;
-  color: #000;
+.alternativa a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.alternativa a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
 }

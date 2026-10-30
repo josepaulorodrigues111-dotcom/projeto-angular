@@ -17,6 +17,14 @@ export class Cabecalho {
   erroSair = '';
   menuAberto = false;
 
+  get nomeUtilizador(): string {
+    return (
+      this.auth.sessao()?.user.user_metadata?.['full_name'] ||
+      this.auth.email ||
+      'Utilizador'
+    );
+  }
+
   alternarMenu(): void {
     this.menuAberto = !this.menuAberto;
   }

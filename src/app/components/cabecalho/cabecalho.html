@@ -1,44 +1,100 @@
 <header class="cabecalho" [class.menu-aberto]="menuAberto">
-  <a routerLink="/" class="logo" aria-label="LojaDos400 - Página inicial" (click)="fecharMenu()">
+  <a
+    routerLink="/"
+    class="logo"
+    aria-label="LojaDos400 - Página inicial"
+    (click)="fecharMenu()"
+  >
     <span class="logo-marca">L</span>
     <span>LojaDos400</span>
   </a>
 
-  <button type="button" class="botao-menu" [attr.aria-expanded]="menuAberto" aria-controls="navegacao-principal"
-    [attr.aria-label]="menuAberto ? 'Fechar menu' : 'Abrir menu'" (click)="alternarMenu()">
+  <button
+    type="button"
+    class="botao-menu"
+    [attr.aria-expanded]="menuAberto"
+    aria-controls="navegacao-principal"
+    [attr.aria-label]="menuAberto ? 'Fechar menu' : 'Abrir menu'"
+    (click)="alternarMenu()"
+  >
     @if (menuAberto) {
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" aria-hidden="true">
-      <path d="M18 6 6 18M6 6l12 12" />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
     } @else {
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" aria-hidden="true">
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
     }
   </button>
 
   <nav id="navegacao-principal" aria-label="Navegação principal">
-    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }" (click)="fecharMenu()">
+    <a
+      routerLink="/"
+      routerLinkActive="ativo"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="fecharMenu()"
+    >
       Início
     </a>
 
-    <a routerLink="/produtos" routerLinkActive="ativo" (click)="fecharMenu()">
+    <a
+      routerLink="/produtos"
+      routerLinkActive="ativo"
+      (click)="fecharMenu()"
+    >
       Produtos
     </a>
 
     @if (auth.eAdmin()) {
-    <a routerLink="/admin" routerLinkActive="ativo" class="admin" (click)="fecharMenu()">
-      Administração
-    </a>
+      <a
+        routerLink="/admin"
+        routerLinkActive="ativo"
+        class="admin"
+        (click)="fecharMenu()"
+      >
+        Administração
+      </a>
     }
   </nav>
 
   <div class="acoes-cabecalho">
-    <a routerLink="/carrinho" routerLinkActive="ativo" class="carrinho" aria-label="Carrinho" (click)="fecharMenu()">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
-        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <a
+      routerLink="/carrinho"
+      routerLinkActive="ativo"
+      class="carrinho"
+      aria-label="Carrinho"
+      (click)="fecharMenu()"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <circle cx="9" cy="20" r="1.5" />
         <circle cx="18" cy="20" r="1.5" />
         <path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 7H6" />
@@ -47,22 +103,41 @@
       <span class="texto-carrinho">Carrinho</span>
 
       @if (carrinho.quantidadeTotal() > 0) {
-      <span class="contador">{{ carrinho.quantidadeTotal() }}</span>
+        <span class="contador">
+          {{ carrinho.quantidadeTotal() }}
+        </span>
       }
     </a>
 
     @if (auth.autenticado()) {
-    <button type="button" class="botao-sair" (click)="sair()">
-      Sair
-    </button>
+      <div class="utilizador">
+        <span class="nome-utilizador">
+          Olá, {{ nomeUtilizador }}
+        </span>
+
+        <button
+          type="button"
+          class="botao-sair"
+          (click)="sair()"
+        >
+          Sair
+        </button>
+      </div>
     } @else {
-    <a routerLink="/login" routerLinkActive="ativo" class="botao-entrar" (click)="fecharMenu()">
-      Entrar
-    </a>
+      <a
+        routerLink="/login"
+        routerLinkActive="ativo"
+        class="botao-entrar"
+        (click)="fecharMenu()"
+      >
+        Entrar
+      </a>
     }
   </div>
 
   @if (erroSair) {
-  <p class="erro-sessao" role="alert">{{ erroSair }}</p>
+    <p class="erro-sessao" role="alert">
+      {{ erroSair }}
+    </p>
   }
 </header>

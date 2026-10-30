@@ -186,6 +186,18 @@ nav a:focus-visible,
   font-size: 0.875rem;
 }
 
+.utilizador {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nome-utilizador {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+
 /* Tablets */
 @media (max-width: 900px) {
   .cabecalho {

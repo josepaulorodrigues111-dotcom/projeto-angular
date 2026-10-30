@@ -1,4 +1,3 @@
-
 <section class="registo">
   <h1>Criar conta</h1>
 
@@ -6,7 +5,6 @@
 
   <form [formGroup]="form" (ngSubmit)="submeter()">
 
-    <!-- Nome -->
     <label>
       Nome
       <input
@@ -23,7 +21,6 @@
       </p>
     }
 
-    <!-- Email -->
     <label>
       Email
       <input
@@ -44,7 +41,6 @@
       </p>
     }
 
-    <!-- Palavra-passe -->
     <label>
       Palavra-passe
       <input
@@ -64,7 +60,6 @@
       </p>
     }
 
-    <!-- Confirmar palavra-passe -->
     <label>
       Confirmar palavra-passe
       <input
@@ -84,21 +79,18 @@
       </p>
     }
 
-    <!-- Mensagem de erro -->
     @if (erro()) {
       <p class="erro" role="alert">
         {{ erro() }}
       </p>
     }
 
-    <!-- Mensagem de sucesso -->
     @if (sucesso()) {
       <p class="sucesso" role="status">
         {{ sucesso() }}
       </p>
     }
 
-    <!-- Botão -->
     <button
       type="submit"
       [disabled]="form.invalid || aProcessar()"
@@ -108,9 +100,8 @@
 
   </form>
 
-  <!-- Ligação para o login -->
-  <p class="link-login">
-    Já tens conta?
+  <div class="alternativa">
+    <span>Já tens conta?</span>
     <a routerLink="/login">Iniciar sessão</a>
-  </p>
+  </div>
 </section>
