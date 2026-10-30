@@ -2,7 +2,7 @@
 
 ## 1. Descrição do projeto
 
-O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript para a consulta e gestão de produtos. O projeto foi desenvolvido no âmbito do módulo de Fundamentos de Angular, com o objetivo de aplicar os conceitos da framework através de uma aplicação SPA (Single Page Application).
+O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript para a consulta e gestão de produtos. O projeto foi desenvolvido com o objetivo de aplicar os conceitos da framework através de uma aplicação SPA (Single Page Application).
 
 ## 2. Principais funcionalidades
 
@@ -11,20 +11,38 @@ O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript p
 - Filtragem de produtos por categoria.
 - Visualização dos detalhes de cada produto.
 - Dashboard com indicadores sobre os produtos e o stock.
-- Autenticação de utilizadores através do Supabase Auth.
+- Registo de contas de cliente.
+- Login e logout de utilizadores através do Supabase Auth.
+- Apresentação do nome do utilizador autenticado.
+- Carrinho de compras, com possibilidade de adicionar e remover produtos e atualizar quantidades.
 - Criação, edição e eliminação de produtos por administradores autorizados.
 - Formulários com validação dos dados.
 - Controlo de permissões através das políticas de segurança da base de dados.
 
-## 3. Aplicação publicada
+## 3. Autenticação e gestão de acessos
+
+A aplicação utiliza o **Supabase Auth** para gerir o registo e a autenticação dos utilizadores.
+
+Estão definidos dois níveis de acesso:
+
+- **Cliente:** pode criar uma conta, iniciar e terminar sessão, consultar produtos e utilizar o carrinho de compras.
+- **Administrador:** tem acesso às funcionalidades de gestão de produtos, podendo criar, editar e eliminar produtos.
+
+A consulta dos produtos está disponível publicamente, sem necessidade de autenticação.
+
+As permissões de administração são verificadas através de uma função específica na base de dados e protegidas por políticas de segurança (Row Level Security — RLS), impedindo que utilizadores sem autorização alterem os produtos.
+
+O registo de uma conta não atribui automaticamente privilégios de administrador.
+
+## 4. Aplicação publicada
 
 A aplicação está disponível através do GitHub Pages:
 
-[**Aceder ao Projeto **](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)
+[**Aceder ao Projeto**](https://josepaulorodrigues111-dotcom.github.io/projeto-angular/)
 
 Repositório do projeto: [GitHub — projeto-angular](https://github.com/josepaulorodrigues111-dotcom/projeto-angular)
 
-## 4. Instalação e execução local
+## 5. Instalação e execução local
 
 ### Pré-requisitos
 
@@ -63,8 +81,9 @@ A aplicação ficará normalmente disponível em:
 
 [http://localhost:4200/](http://localhost:4200/)
 
-## 5. API e fonte de dados
+## 6. API e fonte de dados
 
 A aplicação utiliza o **Supabase** como fonte de dados para armazenar e consultar os produtos. O Supabase Auth é utilizado para a autenticação, enquanto as permissões de administração são verificadas através da configuração de segurança da base de dados.
 
 A comunicação com os dados é realizada através de pedidos HTTP, utilizando o `HttpClient` do Angular.
+

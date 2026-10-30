@@ -20,6 +20,16 @@ describe('Cabecalho', () => {
           useValue: {
             autenticado: signal(autenticado),
             eAdmin: signal(eAdmin),
+            sessao: signal(
+              autenticado
+                ? {
+                    user: {
+                      user_metadata: { full_name: 'Utilizador Teste' },
+                    },
+                  }
+                : null,
+            ),
+            email: autenticado ? 'teste@email.com' : null,
             sair: vi.fn().mockResolvedValue(undefined),
             mensagemErro: vi.fn().mockReturnValue('Ocorreu um erro.'),
           },
@@ -46,6 +56,7 @@ describe('Cabecalho', () => {
     const html = fixture.nativeElement as HTMLElement;
 
     expect(html.textContent).toContain('Sair');
+    expect(html.textContent).toContain('Utilizador Teste');
     expect(html.textContent).not.toContain('Administração');
   });
 
