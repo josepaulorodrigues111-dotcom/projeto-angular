@@ -13,6 +13,7 @@ O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript p
 - Dashboard com indicadores sobre os produtos e o stock.
 - Registo de contas de cliente.
 - Login e logout de utilizadores através do Supabase Auth.
+- Recuperação da palavra-passe através de email, com possibilidade de definir uma nova palavra-passe.
 - Apresentação do nome do utilizador autenticado.
 - Carrinho de compras, com possibilidade de adicionar e remover produtos e atualizar quantidades.
 - Criação, edição e eliminação de produtos por administradores autorizados.
@@ -23,9 +24,11 @@ O **ShopManager** é uma aplicação web desenvolvida com Angular e TypeScript p
 
 A aplicação utiliza o **Supabase Auth** para gerir o registo e a autenticação dos utilizadores.
 
+A aplicação disponibiliza também um mecanismo de recuperação da palavra-passe através do envio de um email com uma ligação segura, permitindo ao utilizador definir uma nova palavra-passe.
+
 Estão definidos dois níveis de acesso:
 
-- **Cliente:** pode criar uma conta, iniciar e terminar sessão, consultar produtos e utilizar o carrinho de compras.
+- **Cliente:** pode criar uma conta, iniciar e terminar sessão, recuperar a palavra-passe, consultar produtos e utilizar o carrinho de compras.
 - **Administrador:** tem acesso às funcionalidades de gestão de produtos, podendo criar, editar e eliminar produtos.
 
 A consulta dos produtos está disponível publicamente, sem necessidade de autenticação.
@@ -79,11 +82,10 @@ npm start
 
 A aplicação ficará normalmente disponível em:
 
-[http://localhost:4200/](http://localhost:4200/)
+http://localhost:4200/
 
 ## 6. API e fonte de dados
 
 A aplicação utiliza o **Supabase** como fonte de dados para armazenar e consultar os produtos. O Supabase Auth é utilizado para a autenticação, enquanto as permissões de administração são verificadas através da configuração de segurança da base de dados.
 
 A comunicação com os dados é realizada através de pedidos HTTP, utilizando o `HttpClient` do Angular.
-
